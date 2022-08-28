@@ -17,22 +17,22 @@ import org.springframework.web.util.*;
 public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
 
     private final RestTemplate restTemplate;
-    private final String coinGeckoSimpleApi;
+    private final String coinGeckoSimpleApiUrl;
 
     public CoinGeckoCurrencyClient(RestTemplate restTemplate,
-                                   @Value("${external.api.coingecko.simple.price}") String coinGeckoSimpleApi) {
+                                   @Value("${external.api.coingecko.simple.price}") String coinGeckoSimpleApiUrl) {
         this.restTemplate = restTemplate;
-        this.coinGeckoSimpleApi = coinGeckoSimpleApi;
+        this.coinGeckoSimpleApiUrl = coinGeckoSimpleApiUrl;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoinGeckoCurrencyClient.class);
 
     @Override
     public Integer getRateToLocalCurrency(String cryptoCurrencyName, Currency currency) {
-        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", coinGeckoSimpleApi, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
+        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", coinGeckoSimpleApiUrl, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
 
         CryptocurrencyShortPriceInfo shortPriceInfo = restTemplate.getForEntity(UriComponentsBuilder
-                .fromHttpUrl(coinGeckoSimpleApi)
+                .fromHttpUrl(coinGeckoSimpleApiUrl)
                 .queryParam("ids", cryptoCurrencyName)
                 .queryParam("vs_currencies", currency)
                 .toUriString(), CryptocurrencyShortPriceInfo.class).getBody();
