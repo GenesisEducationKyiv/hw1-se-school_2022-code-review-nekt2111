@@ -11,41 +11,42 @@ import java.util.List;
 public class SubscriptionEmailServiceImpl implements SubscriptionEmailService {
 
     private final SubscriberEmailDao subscriberEmailDao;
+
     public SubscriptionEmailServiceImpl(SubscriberEmailDao subscriberEmailDao) {
         this.subscriberEmailDao = subscriberEmailDao;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(SubscriptionEmailService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionEmailService.class);
 
     @Override
     public void subscribe(String email) {
         subscriberEmailDao.insert(email);
-        logger.info("Subscribed an email - {}",email);
+        LOGGER.info("Subscribed an email - {}", email);
     }
 
     @Override
     public void unsubscribe(String email) {
         subscriberEmailDao.delete(email);
-        logger.info("Unsubscribed an email - {}",email);
+        LOGGER.info("Unsubscribed an email - {}", email);
     }
 
     @Override
     public void updateSubscribedEmail(String oldEmail, String newEmail) {
         subscriberEmailDao.update(oldEmail, newEmail);
-        logger.info("Updated subscribed email from - {} to - {}",oldEmail, newEmail);
+        LOGGER.info("Updated subscribed email from - {} to - {}", oldEmail, newEmail);
     }
 
     @Override
     public List<String> getAllSubscribedEmails() {
-        logger.info("Getting all subscribed emails");
+        LOGGER.info("Getting all subscribed emails");
         List<String> emails = subscriberEmailDao.findAll();
-        logger.info("All subscribed emails - {}", emails);
+        LOGGER.info("All subscribed emails - {}", emails);
         return emails;
     }
 
     @Override
     public boolean isSubscribed(String email) {
-        logger.info("Email - {} is already subscribed", email);
+        LOGGER.info("Email - {} is already subscribed", email);
         return subscriberEmailDao.findByName(email) != null;
     }
 }

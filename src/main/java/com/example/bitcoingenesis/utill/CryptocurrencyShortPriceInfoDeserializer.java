@@ -54,7 +54,6 @@ public class CryptocurrencyShortPriceInfoDeserializer extends JsonDeserializer<C
         return JsonNodeUtil.getFirstKeyAsCurrency(node);
     }
 
-
     private Integer getDeserializedPriceValue(JsonNode node) {
         return JsonNodeUtil.getFirstValueAsInteger(node);
     }

@@ -14,17 +14,18 @@ import java.util.List;
 public class SubscriptionController {
 
     private final SubscriptionEmailService subscriptionEmailService;
-    public SubscriptionController(SubscriptionEmailService subscriptionEmailService){
+
+    public SubscriptionController(SubscriptionEmailService subscriptionEmailService) {
         this.subscriptionEmailService = subscriptionEmailService;
     }
 
-    private final Logger logger = LoggerFactory.getLogger(SubscriptionController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
 
     @DeleteMapping
     public ResponseEntity<Void> unsubscribe(@RequestParam String email) {
 
-        if(!subscriptionEmailService.isSubscribed(email)) {
-            logger.info("Email - {} is not subscribed", email);
+        if (!subscriptionEmailService.isSubscribed(email)) {
+            LOGGER.info("Email - {} is not subscribed", email);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -33,10 +34,10 @@ public class SubscriptionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> subscriptions(){
-        logger.info("Getting all subscribed emails");
-        List<String> emails =  subscriptionEmailService.getAllSubscribedEmails();
-        logger.info("All subscribed emails - {}", emails);
+    public ResponseEntity<List<String>> subscriptions() {
+        LOGGER.info("Getting all subscribed emails");
+        List<String> emails = subscriptionEmailService.getAllSubscribedEmails();
+        LOGGER.info("All subscribed emails - {}", emails);
         return ResponseEntity.ok(emails);
     }
 

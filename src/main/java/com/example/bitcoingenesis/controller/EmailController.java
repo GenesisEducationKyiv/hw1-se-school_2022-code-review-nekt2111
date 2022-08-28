@@ -21,6 +21,7 @@ public class EmailController {
     private final EmailService emailService;
     private final SubscriberEmailDao subscriberEmailDao;
     private final CryptoCurrencyClient cryptoCurrencyClient;
+
     public EmailController(EmailService emailService,
                            SubscriberEmailDao subscriberEmailDao,
                            CryptoCurrencyClient cryptoCurrencyClient) {

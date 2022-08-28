@@ -6,8 +6,8 @@ public enum Currency {
 
     PLN("Polska zlota");
 
-
     private final String name;
+
     Currency(String name) {
         this.name = name;
     }

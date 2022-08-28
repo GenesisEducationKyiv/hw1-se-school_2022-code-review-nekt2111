@@ -15,7 +15,6 @@ import org.springframework.web.util.*;
 @JsonDeserialize(using = CryptocurrencyShortPriceInfoDeserializer.class)
 public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
 
-
     private final RestTemplate restTemplate;
 
     public CoinGeckoCurrencyClient(RestTemplate restTemplate) {
@@ -23,12 +22,11 @@ public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
     }
 
     private static final String COIN_GECKO_SIMPLE_API = "https://api.coingecko.com/api/v3/simple/price";
-    private final Logger logger = LoggerFactory.getLogger(CoinGeckoCurrencyClient.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CoinGeckoCurrencyClient.class);
 
     @Override
     public Integer getRateToLocalCurrency(String cryptoCurrencyName, Currency currency) {
-        logger.info("Making request to {} for crypto {} in currency {} ({})", COIN_GECKO_SIMPLE_API, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
+        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", COIN_GECKO_SIMPLE_API, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
 
         CryptocurrencyShortPriceInfo shortPriceInfo = restTemplate.getForEntity(UriComponentsBuilder
                 .fromHttpUrl(COIN_GECKO_SIMPLE_API)
@@ -36,7 +34,7 @@ public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
                 .queryParam("vs_currencies", currency)
                 .toUriString(), CryptocurrencyShortPriceInfo.class).getBody();
 
-        logger.info("Received data {} ", shortPriceInfo);
+        LOGGER.info("Received data {} ", shortPriceInfo);
 
         return shortPriceInfo.getPriceInCurrency().getPrice();
     }
@@ -49,7 +47,7 @@ public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
         PriceInCurrency priceInCurrency = new PriceInCurrency();
 
         priceInCurrency.setCurrency(currency);
-        priceInCurrency.setPrice(getRateToLocalCurrency(cryptocurrencyName,currency));
+        priceInCurrency.setPrice(getRateToLocalCurrency(cryptocurrencyName, currency));
 
         shortPriceInfo.setPriceInCurrency(priceInCurrency);
 

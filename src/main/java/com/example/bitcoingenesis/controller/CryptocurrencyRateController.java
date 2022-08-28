@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 public class CryptocurrencyRateController {
 
     private final CryptoCurrencyClient cryptoCurrencyClient;
+
     public CryptocurrencyRateController(CryptoCurrencyClient cryptoCurrencyClient) {
         this.cryptoCurrencyClient = cryptoCurrencyClient;
     }
 
-    private final Currency defaultCurrency = Currency.UAH ;
+    private final Currency defaultCurrency = Currency.UAH;
     private final String defaultCurrencyStr = "uah";
     private final String defaultCryptoCurrency = "bitcoin";
 
-
     @GetMapping
-    public ResponseEntity<Integer> rate(){
+    public ResponseEntity<Integer> rate() {
         return ResponseEntity.ok(cryptoCurrencyClient.getRateToLocalCurrency(defaultCryptoCurrency, defaultCurrency));
     }
 
