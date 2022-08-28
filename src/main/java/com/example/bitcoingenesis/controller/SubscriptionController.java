@@ -35,7 +35,6 @@ public class SubscriptionController {
 
     @GetMapping
     public ResponseEntity<List<String>> subscriptions() {
-        LOGGER.info("Getting all subscribed emails");
         List<String> emails = subscriptionEmailService.getAllSubscribedEmails();
         LOGGER.info("All subscribed emails - {}", emails);
         return ResponseEntity.ok(emails);

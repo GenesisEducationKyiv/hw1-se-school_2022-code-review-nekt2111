@@ -38,10 +38,8 @@ public class SubscriptionEmailServiceImpl implements SubscriptionEmailService {
 
     @Override
     public List<String> getAllSubscribedEmails() {
-        LOGGER.info("Getting all subscribed emails");
-        List<String> emails = subscriberEmailDao.findAll();
-        LOGGER.info("All subscribed emails - {}", emails);
-        return emails;
+        LOGGER.info("Getting all subscribed emails...");
+        return subscriberEmailDao.findAll();
     }
 
     @Override
