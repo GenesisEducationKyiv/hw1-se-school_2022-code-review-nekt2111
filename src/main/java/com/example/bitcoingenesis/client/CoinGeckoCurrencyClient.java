@@ -7,6 +7,7 @@ import com.example.bitcoingenesis.utill.CryptocurrencyShortPriceInfoDeserializer
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.*;
@@ -16,20 +17,22 @@ import org.springframework.web.util.*;
 public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
 
     private final RestTemplate restTemplate;
+    private final String coinGeckoSimpleApi;
 
-    public CoinGeckoCurrencyClient(RestTemplate restTemplate) {
+    public CoinGeckoCurrencyClient(RestTemplate restTemplate,
+                                   @Value("${external.api.coingecko.simple.price}") String coinGeckoSimpleApi) {
         this.restTemplate = restTemplate;
+        this.coinGeckoSimpleApi = coinGeckoSimpleApi;
     }
 
-    private static final String COIN_GECKO_SIMPLE_API = "https://api.coingecko.com/api/v3/simple/price";
     private static final Logger LOGGER = LoggerFactory.getLogger(CoinGeckoCurrencyClient.class);
 
     @Override
     public Integer getRateToLocalCurrency(String cryptoCurrencyName, Currency currency) {
-        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", COIN_GECKO_SIMPLE_API, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
+        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", coinGeckoSimpleApi, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
 
         CryptocurrencyShortPriceInfo shortPriceInfo = restTemplate.getForEntity(UriComponentsBuilder
-                .fromHttpUrl(COIN_GECKO_SIMPLE_API)
+                .fromHttpUrl(coinGeckoSimpleApi)
                 .queryParam("ids", cryptoCurrencyName)
                 .queryParam("vs_currencies", currency)
                 .toUriString(), CryptocurrencyShortPriceInfo.class).getBody();
