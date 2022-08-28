@@ -1,10 +1,11 @@
 package com.example.bitcoingenesis.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@org.springframework.context.annotation.Configuration
-public class Configuration {
+@Configuration
+public class WebConfiguration {
 
     @Bean
     RestTemplate restTemplate() {
