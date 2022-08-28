@@ -2,14 +2,12 @@ package com.example.bitcoingenesis.utill;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class FileUtil {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 
     public static void appendStringToEndOfFirstLine(String string, String fileLocation, String separator) {
@@ -47,7 +45,6 @@ public class FileUtil {
                 LOGGER.error("Error occurred with writing strings in file - {}", fileLocation, e);
             }
         }
-
     }
 
     public static List<String> getFileFirstLineAsListOfStrings(String fileLocation, String separator) {
@@ -72,7 +69,6 @@ public class FileUtil {
             } catch (IOException e) {
                 LOGGER.error("Error occurred with reading strings from file - {}", fileLocation, e);
             }
-
         }
 
         return stringsList;
@@ -85,5 +81,3 @@ public class FileUtil {
         return exists;
     }
 }
-
-
