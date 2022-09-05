@@ -14,6 +14,8 @@ public final class TestConstants {
     public static final int PRICE = 100_000;
     public static final String CRYPTO = "BITCOIN";
 
+    public static final String CRYPTO_CURRENCY_CLIENT_URL = "TEST_URL";
+
     public static final CryptocurrencyShortPriceInfo  SHORT_PRICE_INFO = generateShortPriceInfo();
 
 
