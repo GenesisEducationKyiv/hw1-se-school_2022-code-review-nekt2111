@@ -22,7 +22,7 @@ import java.util.List;
 import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "db.file.path=src/test/java/com/example/bitcoingenesis/util/mock-db.txt" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "db.file.path=/usr/src/app/src/mock-db.txt" })
 @AutoConfigureMockMvc
 public class SubscriptionEmailTest {
     @LocalServerPort
@@ -36,13 +36,16 @@ public class SubscriptionEmailTest {
 
     private final static String EMAIL_TO_SUBSCRIBE = "subscribe@gmail.com";
 
+    private final static String MOCK_FILE_DB_LOCATION = "/usr/src/app/src/mock-db.txt";
+
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeAll
     public static void init() {
+        FileUtil.clearFile(MOCK_FILE_DB_LOCATION);
         List<String> mockEmails = List.of(EMAIL_TO_UNSUBSCRIBE, EMAIL);
-        FileUtil.writeInFirstLineStringFromList(mockEmails, "src/test/java/com/example/bitcoingenesis/util/mock-db.txt", " ");
+        FileUtil.writeInFirstLineStringFromList(mockEmails, MOCK_FILE_DB_LOCATION, " ");
         restTemplate = new RestTemplate();
     }
 
@@ -84,11 +87,10 @@ public class SubscriptionEmailTest {
     }
 
     @Test
-    public void findAllEmails() throws Exception {
+    public void findAllEmails() {
         List<String> emails = restTemplate.getForObject(baseUrl + "/subscription", List.class);
 
         assertNotNull(emails);
         assertNotEquals(0, emails.size());
     }
-
 }

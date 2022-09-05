@@ -74,6 +74,19 @@ public class FileUtil {
         return stringsList;
     }
 
+    public static void clearFile(String fileLocation) {
+        if (checkIfFileExists(fileLocation)) {
+            try {
+                PrintWriter writer = new PrintWriter(fileLocation);
+                writer.print("");
+                writer.close();
+            }
+            catch (IOException exception) {
+                LOGGER.error("Error occurred while clearing file with file location - {}", fileLocation);
+            }
+        }
+    }
+
     private static boolean checkIfFileExists(String fileLocation) {
         File file = new File(fileLocation);
         boolean exists = file.exists();
