@@ -4,11 +4,10 @@ import com.example.bitcoingenesis.client.CryptoCurrencyClient;
 import com.example.bitcoingenesis.controller.EmailController;
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
 import com.example.bitcoingenesis.service.EmailService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class EmailControllerTest {
 
     private EmailController emailController;
@@ -33,7 +32,7 @@ public class EmailControllerTest {
     @Mock
     private CryptoCurrencyClient cryptoCurrencyClient;
 
-    @Before
+    @BeforeEach
     public void beforeTests() {
         emailController = new EmailController(emailService, subscriberEmailDao, cryptoCurrencyClient);
     }

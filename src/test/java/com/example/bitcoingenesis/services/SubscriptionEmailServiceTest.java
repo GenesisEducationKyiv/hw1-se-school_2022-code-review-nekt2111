@@ -3,11 +3,10 @@ package com.example.bitcoingenesis.services;
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
 import com.example.bitcoingenesis.service.SubscriptionEmailService;
 import com.example.bitcoingenesis.service.SubscriptionEmailServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class SubscriptionEmailServiceTest {
 
     private SubscriptionEmailService subscriptionEmailService;
@@ -24,7 +23,7 @@ public class SubscriptionEmailServiceTest {
     @Mock
     private SubscriberEmailDao subscriberEmailDao;
 
-    @Before
+    @BeforeEach
     public void beforeTests() {
         this.subscriptionEmailService = new SubscriptionEmailServiceImpl(subscriberEmailDao);
     }

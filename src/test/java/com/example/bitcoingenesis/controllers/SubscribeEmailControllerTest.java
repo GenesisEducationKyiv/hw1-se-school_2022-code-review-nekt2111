@@ -3,11 +3,10 @@ package com.example.bitcoingenesis.controllers;
 import com.example.bitcoingenesis.controller.SubscribeEmailController;
 import com.example.bitcoingenesis.service.EmailValidationService;
 import com.example.bitcoingenesis.service.SubscriptionEmailService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,7 +14,7 @@ import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class SubscribeEmailControllerTest {
 
     private SubscribeEmailController subscribeEmailController;
@@ -26,7 +25,7 @@ public class SubscribeEmailControllerTest {
     @Mock
     private EmailValidationService emailValidationService;
 
-    @Before
+    @BeforeEach
     public void beforeTests() {
         this.subscribeEmailController = new SubscribeEmailController(subscriptionEmailService, emailValidationService);
     }

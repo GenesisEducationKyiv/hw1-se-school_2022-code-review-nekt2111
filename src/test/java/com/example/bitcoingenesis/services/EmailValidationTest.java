@@ -1,19 +1,18 @@
 package com.example.bitcoingenesis.services;
 
 import com.example.bitcoingenesis.service.EmailValidationService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class EmailValidationTest {
     private EmailValidationService emailValidationService;
 
-    @Before
+    @BeforeEach
     public void beforeTests(){
         this.emailValidationService = new EmailValidationService();
     }

@@ -2,11 +2,10 @@ package com.example.bitcoingenesis.services;
 
 import com.example.bitcoingenesis.service.EmailService;
 import com.example.bitcoingenesis.service.EmailServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import java.util.List;
@@ -15,7 +14,7 @@ import static com.example.bitcoingenesis.util.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class EmailServiceTest {
 
     private EmailService emailService;
@@ -23,7 +22,7 @@ public class EmailServiceTest {
     @Mock
     private JavaMailSender mailSender;
 
-    @Before
+    @BeforeEach
     public void beforeTests() {
         this.emailService = new EmailServiceImpl(mailSender, SERVER_EMAIL);
     }
