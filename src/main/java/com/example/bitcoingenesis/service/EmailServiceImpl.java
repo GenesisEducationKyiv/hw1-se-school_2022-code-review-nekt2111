@@ -5,6 +5,7 @@ import com.example.bitcoingenesis.model.PriceInCurrency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,14 @@ import java.util.Map;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
     private JavaMailSender mailSender;
+
+    private final String emailUserName;
+
+    public EmailServiceImpl(JavaMailSender mailSender,  @Value("${spring.mail.username}") String emailUserName) {
+        this.mailSender = mailSender;
+        this.emailUserName = emailUserName;
+    }
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     @Override
@@ -58,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public SimpleMailMessage createMessageFromCryptocurrencyShortPriceInfo(CryptocurrencyShortPriceInfo cryptoPriceInfo) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("genesisbitcoinrate@ukr.net");
+        simpleMailMessage.setFrom(emailUserName);
 
         String cryptoName = cryptoPriceInfo.getCryptocurrencyName().toUpperCase();
         PriceInCurrency cryptoPrice = cryptoPriceInfo.getPriceInCurrency();

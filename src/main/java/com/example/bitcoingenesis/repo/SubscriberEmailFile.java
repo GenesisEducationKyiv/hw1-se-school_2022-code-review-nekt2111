@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class SubscriberEmailFile implements SubscriberEmailDao {
 
-    private static final String FILE_LOCATION = "/usr/src/app/db.txt";
+    private static final String FILE_LOCATION = "src/db.txt";
     private static final String EMAILS_STRING_SEPARATOR = " ";
 
     @Override

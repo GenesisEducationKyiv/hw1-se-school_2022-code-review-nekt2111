@@ -25,7 +25,7 @@ public class SubscriptionEmailServiceTest {
     private SubscriberEmailDao subscriberEmailDao;
 
     @Before
-    public void beforeTest() {
+    public void beforeTests() {
         this.subscriptionEmailService = new SubscriptionEmailServiceImpl(subscriberEmailDao);
     }
 

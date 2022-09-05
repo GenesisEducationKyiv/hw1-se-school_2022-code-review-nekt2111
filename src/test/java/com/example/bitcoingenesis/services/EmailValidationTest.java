@@ -13,7 +13,7 @@ public class EmailValidationTest {
     private EmailValidationService emailValidationService;
 
     @Before
-    public void beforeEach(){
+    public void beforeTests(){
         this.emailValidationService = new EmailValidationService();
     }
 
