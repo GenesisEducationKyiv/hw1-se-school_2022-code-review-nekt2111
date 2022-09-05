@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -55,9 +56,7 @@ public class EmailValidationTest {
 
     @Test
     public void validateEmail(){
-        String email = "nekt2111@gmail.com";
-
-        boolean isEmailValid = emailValidationService.validate(email);
+        boolean isEmailValid = emailValidationService.validate(EMAIL);
 
         assertTrue(isEmailValid);
     }

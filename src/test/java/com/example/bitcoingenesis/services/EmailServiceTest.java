@@ -45,6 +45,14 @@ public class EmailServiceTest {
     }
 
     @Test
+    public void createMessageFromCryptocurrencyShortPriceInfo() {
+        SimpleMailMessage simpleMailMessage = emailService.createMessageFromCryptocurrencyShortPriceInfo(SHORT_PRICE_INFO);
+
+        assertEquals(getSimpleMailMessage().getFrom(), simpleMailMessage.getFrom());
+        assertEquals(getSimpleMailMessage().getSubject(), simpleMailMessage.getSubject());
+        assertEquals(getSimpleMailMessage().getText(), simpleMailMessage.getText());
+    }
+    @Test
     public void sendEmailToAll() {
         List<String> emails = List.of(EMAIL, SERVER_EMAIL);
         SimpleMailMessage mailMessage = getSimpleMailMessage();
@@ -55,25 +63,19 @@ public class EmailServiceTest {
         verify(mailSender, times(emails.size())).send(mailMessage);
     }
 
-    @Test
-    public void createMessageFromCryptocurrencyShortPriceInfo() {
-        SimpleMailMessage simpleMailMessage = emailService.createMessageFromCryptocurrencyShortPriceInfo(SHORT_PRICE_INFO);
 
-        assertEquals(getSimpleMailMessage(), simpleMailMessage);
-    }
-
-    private static SimpleMailMessage getSimpleMailMessage() {
+    private SimpleMailMessage getSimpleMailMessage() {
         SimpleMailMessage message = SIMPLE_MAIL_MESSAGE;
         message.setSubject(getSubjectOfMailMessage());
         message.setText(getTextOfMailMessage());
         return message;
     }
 
-    private static String getSubjectOfMailMessage() {
+    private String getSubjectOfMailMessage() {
         return CRYPTO + " rate";
     }
 
-    private static String getTextOfMailMessage() {
+    private String getTextOfMailMessage() {
         return String.format("1 %s = %d %s (%s)", CRYPTO, PRICE, CURRENCY, CURRENCY.getName());
     }
 }
