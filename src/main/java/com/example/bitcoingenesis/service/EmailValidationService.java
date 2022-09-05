@@ -16,9 +16,15 @@ public class EmailValidationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailValidationService.class);
 
     public boolean validate(String emailStr) {
-        LOGGER.info("Email - {} is not valid", emailStr);
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        return matcher.find();
+
+        boolean result = matcher.find();
+
+        if(!result){
+            LOGGER.info("Email - {} is not valid", emailStr);
+        }
+
+        return result;
     }
 
 }
