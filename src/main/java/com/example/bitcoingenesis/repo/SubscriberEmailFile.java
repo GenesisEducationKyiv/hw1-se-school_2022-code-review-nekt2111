@@ -3,6 +3,7 @@ package com.example.bitcoingenesis.repo;
 import com.example.bitcoingenesis.utill.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -12,7 +13,8 @@ import java.util.List;
 @Repository
 public class SubscriberEmailFile implements SubscriberEmailDao {
 
-    private static final String FILE_LOCATION = "src/db.txt";
+    @Value("${db.file.path}")
+    private String FILE_LOCATION;
     private static final String EMAILS_STRING_SEPARATOR = " ";
 
     @Override
