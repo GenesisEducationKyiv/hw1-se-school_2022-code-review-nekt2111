@@ -20,7 +20,7 @@ public class EmailValidationService {
 
         boolean result = matcher.find();
 
-        if(!result){
+        if (!result) {
             LOGGER.info("Email - {} is not valid", emailStr);
         }
 

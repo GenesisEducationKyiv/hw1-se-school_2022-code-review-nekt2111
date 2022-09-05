@@ -80,8 +80,7 @@ public class FileUtil {
                 PrintWriter writer = new PrintWriter(fileLocation);
                 writer.print("");
                 writer.close();
-            }
-            catch (IOException exception) {
+            } catch (IOException exception) {
                 LOGGER.error("Error occurred while clearing file with file location - {}", fileLocation);
             }
         }

@@ -22,11 +22,12 @@ public class EmailServiceImpl implements EmailService {
 
     private final String emailUserName;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+
     public EmailServiceImpl(JavaMailSender mailSender,  @Value("${spring.mail.username}") String emailUserName) {
         this.mailSender = mailSender;
         this.emailUserName = emailUserName;
     }
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     @Override
     public boolean sendEmail(SimpleMailMessage message) {

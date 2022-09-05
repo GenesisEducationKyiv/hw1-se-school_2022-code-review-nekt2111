@@ -14,12 +14,12 @@ import java.util.List;
 public class SubscriberEmailFile implements SubscriberEmailDao {
 
     @Value("${db.file.path}")
-    private String FILE_LOCATION;
+    private String fileLocation;
     private static final String EMAILS_STRING_SEPARATOR = " ";
 
     @Override
     public void insert(String email) {
-        FileUtil.appendStringToEndOfFirstLine(email, FILE_LOCATION, EMAILS_STRING_SEPARATOR);
+        FileUtil.appendStringToEndOfFirstLine(email, fileLocation, EMAILS_STRING_SEPARATOR);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SubscriberEmailFile implements SubscriberEmailDao {
 
         if (emailExists) {
             emails.add(emails.indexOf(oldEmail), newEmail);
-            FileUtil.writeInFirstLineStringFromList(emails, FILE_LOCATION, EMAILS_STRING_SEPARATOR);
+            FileUtil.writeInFirstLineStringFromList(emails, fileLocation, EMAILS_STRING_SEPARATOR);
         }
 
     }
@@ -45,7 +45,7 @@ public class SubscriberEmailFile implements SubscriberEmailDao {
 
         if (emailExists) {
             emails.remove(email);
-            FileUtil.writeInFirstLineStringFromList(emails, FILE_LOCATION, EMAILS_STRING_SEPARATOR);
+            FileUtil.writeInFirstLineStringFromList(emails, fileLocation, EMAILS_STRING_SEPARATOR);
         }
     }
 
@@ -59,6 +59,6 @@ public class SubscriberEmailFile implements SubscriberEmailDao {
 
     @Override
     public List<String> findAll() {
-        return FileUtil.getFileFirstLineAsListOfStrings(FILE_LOCATION, EMAILS_STRING_SEPARATOR);
+        return FileUtil.getFileFirstLineAsListOfStrings(fileLocation, EMAILS_STRING_SEPARATOR);
     }
 }
