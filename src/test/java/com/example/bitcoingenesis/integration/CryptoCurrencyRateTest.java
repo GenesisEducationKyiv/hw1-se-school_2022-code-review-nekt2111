@@ -35,9 +35,6 @@ public class CryptoCurrencyRateTest {
     private String defaultContextPath;
 
     @Autowired
-    private static RestTemplate restTemplate;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach

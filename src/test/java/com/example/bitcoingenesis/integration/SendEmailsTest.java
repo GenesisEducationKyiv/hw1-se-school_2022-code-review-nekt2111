@@ -35,7 +35,7 @@ public class SendEmailsTest {
     private String defaultContextPath;
 
     @Autowired
-    private static RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     private static final String SEND_EMAILS_ENDPOINT = "/sendEmails";
 
