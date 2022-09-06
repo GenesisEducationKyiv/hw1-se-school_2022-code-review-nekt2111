@@ -12,6 +12,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -22,7 +24,7 @@ import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
 import static com.example.bitcoingenesis.util.TestConstants.MOCK_FILE_DB_LOCATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "db.file.path=/usr/src/app/src/mock-db.txt" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SendEmailsTest {
 
     @LocalServerPort
@@ -38,6 +40,11 @@ public class SendEmailsTest {
     private RestTemplate restTemplate;
 
     private static final String SEND_EMAILS_ENDPOINT = "/sendEmails";
+
+    @DynamicPropertySource
+    static void registerProperty(DynamicPropertyRegistry registry) {
+        registry.add("db.file.path", () -> MOCK_FILE_DB_LOCATION);
+    }
 
     @BeforeAll
     public static void init() {
@@ -61,7 +68,7 @@ public class SendEmailsTest {
 
     @Test
     public void sendEmailWithParameters() {
-        String uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+        String uri = UriComponentsBuilder.fromHttpUrl(baseUrl + SEND_EMAILS_ENDPOINT)
                 .queryParam("currency", Currency.USD)
                 .queryParam("crypto", "ethereum")
                 .toUriString();

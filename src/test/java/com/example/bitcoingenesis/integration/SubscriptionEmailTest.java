@@ -12,6 +12,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -24,7 +26,7 @@ import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
 import static com.example.bitcoingenesis.util.TestConstants.MOCK_FILE_DB_LOCATION;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "db.file.path=/usr/src/app/src/mock-db.txt" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class SubscriptionEmailTest {
     @LocalServerPort
@@ -45,6 +47,11 @@ public class SubscriptionEmailTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @DynamicPropertySource
+    static void registerProperty(DynamicPropertyRegistry registry) {
+        registry.add("db.file.path", () -> MOCK_FILE_DB_LOCATION);
+    }
 
     @BeforeAll
     public static void init() {
