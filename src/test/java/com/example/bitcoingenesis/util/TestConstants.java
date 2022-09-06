@@ -16,6 +16,8 @@ public final class TestConstants {
 
     public static final String CRYPTO_CURRENCY_CLIENT_URL = "TEST_URL";
 
+    public final static String MOCK_FILE_DB_LOCATION = "/usr/src/app/src/mock-db.txt";
+
     public static final CryptocurrencyShortPriceInfo  SHORT_PRICE_INFO = generateShortPriceInfo();
 
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -16,7 +17,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,7 +28,11 @@ public class CryptoCurrencyRateTest {
     @LocalServerPort
     private int port;
 
-    private String baseUrl = "http://localhost";
+    @Value("${server.base.path}")
+    private String baseUrl;
+
+    @Value("${server.servlet.context-path}")
+    private String defaultContextPath;
 
     @Autowired
     private static RestTemplate restTemplate;
@@ -38,7 +42,7 @@ public class CryptoCurrencyRateTest {
 
     @BeforeEach
     public void setUp() {
-        baseUrl = baseUrl.concat(":").concat(port + "").concat("/api");
+        baseUrl = baseUrl.concat(":").concat(port + "").concat(defaultContextPath);
     }
 
     @Test

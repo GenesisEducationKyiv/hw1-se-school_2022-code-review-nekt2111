@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
+import static com.example.bitcoingenesis.util.TestConstants.MOCK_FILE_DB_LOCATION;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "db.file.path=/usr/src/app/src/mock-db.txt" })
@@ -28,15 +30,18 @@ public class SubscriptionEmailTest {
     @LocalServerPort
     private int port;
 
-    private String baseUrl = "http://localhost";
+    @Value("${server.base.path}")
+    private String baseUrl;
 
-    private static RestTemplate restTemplate;
+    @Value("${server.servlet.context-path}")
+    private String defaultContextPath;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private final static String EMAIL_TO_UNSUBSCRIBE = "emailDelete@gmail.com";
 
     private final static String EMAIL_TO_SUBSCRIBE = "subscribe@gmail.com";
-
-    private final static String MOCK_FILE_DB_LOCATION = "/usr/src/app/src/mock-db.txt";
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,12 +51,11 @@ public class SubscriptionEmailTest {
         FileUtil.clearFile(MOCK_FILE_DB_LOCATION);
         List<String> mockEmails = List.of(EMAIL_TO_UNSUBSCRIBE, EMAIL);
         FileUtil.writeInFirstLineStringFromList(mockEmails, MOCK_FILE_DB_LOCATION, " ");
-        restTemplate = new RestTemplate();
     }
 
     @BeforeEach
     public void setUp() {
-        baseUrl = baseUrl.concat(":").concat(port + "").concat("/api");
+        baseUrl = baseUrl.concat(":").concat(port + "").concat(defaultContextPath);
     }
 
     @Test
