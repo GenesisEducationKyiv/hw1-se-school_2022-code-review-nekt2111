@@ -1,6 +1,6 @@
 package com.example.bitcoingenesis.util;
 
-import com.example.bitcoingenesis.model.CryptocurrencyShortPriceInfo;
+import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.model.PriceInCurrency;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,9 +16,9 @@ public final class TestConstants {
 
     public static final String CRYPTO_CURRENCY_CLIENT_URL = "TEST_URL";
 
-    public final static String MOCK_FILE_DB_LOCATION = "/usr/src/app/src/mock-db.txt";
+    public final static String MOCK_FILE_DB_LOCATION = "src/test/java/com/example/bitcoingenesis/util/mock-db.txt";
 
-    public static final CryptocurrencyShortPriceInfo  SHORT_PRICE_INFO = generateShortPriceInfo();
+    public static final CryptoPriceInfo SHORT_PRICE_INFO = generateShortPriceInfo();
 
 
     private static SimpleMailMessage generateSimpleMailMessage() {
@@ -28,16 +28,16 @@ public final class TestConstants {
         return simpleMailMessage;
     }
 
-    private static CryptocurrencyShortPriceInfo generateShortPriceInfo() {
-        CryptocurrencyShortPriceInfo cryptocurrencyShortPriceInfo = new CryptocurrencyShortPriceInfo();
-        cryptocurrencyShortPriceInfo.setCryptocurrencyName(CRYPTO);
+    private static CryptoPriceInfo generateShortPriceInfo() {
+        CryptoPriceInfo cryptoPriceInfo = new CryptoPriceInfo();
+        cryptoPriceInfo.setCryptocurrencyName(CRYPTO);
 
         PriceInCurrency priceInCurrency = new PriceInCurrency();
         priceInCurrency.setPrice(PRICE);
         priceInCurrency.setCurrency(CURRENCY);
 
-        cryptocurrencyShortPriceInfo.setPriceInCurrency(priceInCurrency);
+        cryptoPriceInfo.setPriceInCurrency(priceInCurrency);
 
-        return cryptocurrencyShortPriceInfo;
+        return cryptoPriceInfo;
     }
 }

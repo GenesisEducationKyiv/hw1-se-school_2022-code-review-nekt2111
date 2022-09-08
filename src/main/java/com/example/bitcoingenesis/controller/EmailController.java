@@ -1,10 +1,12 @@
 package com.example.bitcoingenesis.controller;
 
 import com.example.bitcoingenesis.client.CryptoCurrencyClient;
-import com.example.bitcoingenesis.model.CryptocurrencyShortPriceInfo;
+import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
 import com.example.bitcoingenesis.service.EmailService;
+import com.example.bitcoingenesis.service.MessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -21,28 +23,41 @@ public class EmailController {
     private final EmailService emailService;
     private final SubscriberEmailDao subscriberEmailDao;
     private final CryptoCurrencyClient cryptoCurrencyClient;
+    private final MessageService messageService;
+
+    private final String email;
 
     public EmailController(EmailService emailService,
                            SubscriberEmailDao subscriberEmailDao,
-                           CryptoCurrencyClient cryptoCurrencyClient) {
+                           CryptoCurrencyClient cryptoCurrencyClient,
+                           MessageService messageService,
+                           @Value("${spring.mail.username}") String email) {
         this.emailService = emailService;
         this.subscriberEmailDao = subscriberEmailDao;
         this.cryptoCurrencyClient = cryptoCurrencyClient;
+        this.messageService = messageService;
+        this.email = email;
     }
 
     @PostMapping
     public ResponseEntity<Void> sendEmails(@RequestParam(defaultValue = "bitcoin", required = false) String crypto,
                                      @RequestParam(defaultValue = "uah", required = false) String currency) {
-        sendEmailsWithRateOfCryptoInCurrency(crypto, Currency.valueOf(currency.toUpperCase()));
+        boolean wasResultOfSendingToAllSuccessful = sendEmailsWithRateOfCryptoInCurrency(crypto, Currency.valueOf(currency.toUpperCase()));
+
+        if (!wasResultOfSendingToAllSuccessful) {
+            return new ResponseEntity<>(HttpStatus.FAILED_DEPENDENCY);
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private void sendEmailsWithRateOfCryptoInCurrency(String crypto, Currency currency) {
+    private boolean sendEmailsWithRateOfCryptoInCurrency(String crypto, Currency currency) {
         List<String> emails = subscriberEmailDao.findAll();
 
-        CryptocurrencyShortPriceInfo cryptoPriceInfo = cryptoCurrencyClient.getCryptoShortPriceInfo(crypto, currency);
-        SimpleMailMessage mailMessage = emailService.createMessageFromCryptocurrencyShortPriceInfo(cryptoPriceInfo);
-        emailService.sendEmailToAll(mailMessage, emails);
+        Integer price = cryptoCurrencyClient.getCryptoRateToLocalCurrency(crypto, currency);
+        CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(crypto, currency, price);
 
+        SimpleMailMessage mailMessage = messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, email);
+        return emailService.sendEmailToAll(mailMessage, emails);
     }
 }

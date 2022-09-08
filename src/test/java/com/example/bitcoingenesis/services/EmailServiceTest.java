@@ -24,7 +24,7 @@ public class EmailServiceTest {
 
     @BeforeEach
     public void beforeTests() {
-        this.emailService = new EmailServiceImpl(mailSender, SERVER_EMAIL);
+        this.emailService = new EmailServiceImpl(mailSender);
     }
 
     @Test
@@ -41,15 +41,6 @@ public class EmailServiceTest {
         boolean result = emailService.sendEmail(SIMPLE_MAIL_MESSAGE);
 
         assertFalse(result);
-    }
-
-    @Test
-    public void createMessageFromCryptocurrencyShortPriceInfo() {
-        SimpleMailMessage simpleMailMessage = emailService.createMessageFromCryptocurrencyShortPriceInfo(SHORT_PRICE_INFO);
-
-        assertEquals(getSimpleMailMessage().getFrom(), simpleMailMessage.getFrom());
-        assertEquals(getSimpleMailMessage().getSubject(), simpleMailMessage.getSubject());
-        assertEquals(getSimpleMailMessage().getText(), simpleMailMessage.getText());
     }
     @Test
     public void sendEmailToAll() {
@@ -75,6 +66,6 @@ public class EmailServiceTest {
     }
 
     private String getTextOfMailMessage() {
-        return String.format("1 %s = %d %s (%s)", CRYPTO, PRICE, CURRENCY, CURRENCY.getName());
+        return String.format("1 %s = %d %s (%s)", CRYPTO, PRICE, CURRENCY, CURRENCY.getFullName());
     }
 }

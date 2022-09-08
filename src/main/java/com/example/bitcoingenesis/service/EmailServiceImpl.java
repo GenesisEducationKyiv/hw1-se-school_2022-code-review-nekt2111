@@ -1,10 +1,9 @@
 package com.example.bitcoingenesis.service;
 
-import com.example.bitcoingenesis.model.CryptocurrencyShortPriceInfo;
+import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.PriceInCurrency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,13 +19,10 @@ public class EmailServiceImpl implements EmailService {
 
     private JavaMailSender mailSender;
 
-    private final String emailUserName;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
-    public EmailServiceImpl(JavaMailSender mailSender,  @Value("${spring.mail.username}") String emailUserName) {
+    public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        this.emailUserName = emailUserName;
     }
 
     @Override
@@ -45,8 +41,9 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendEmailToAll(SimpleMailMessage message, List<String> emails) {
+    public boolean sendEmailToAll(SimpleMailMessage message, List<String> emails) {
         LOGGER.info("Starting to send messages to emails... Number of emails to send message - {}", emails.size());
+        boolean sendingToAllSuccessful = false;
 
         Map<String, Boolean> emailsResultOfSendingMap = new HashMap<>();
 
@@ -58,22 +55,15 @@ public class EmailServiceImpl implements EmailService {
         List<String> emailsWithSuccessfulSending = getAllEmailsWithSpecificResultOfSending(emailsResultOfSendingMap, true);
         List<String> emailsWithFailedSending = getAllEmailsWithSpecificResultOfSending(emailsResultOfSendingMap, false);
 
+        if (emailsWithFailedSending.isEmpty()) {
+            sendingToAllSuccessful = true;
+        }
+
         LOGGER.info("Sending of emails is completed.");
         LOGGER.info("Number of emails that were sent successfully - {} from {}. Emails - [{}] ", emailsWithSuccessfulSending.size(), emails.size(), emailsWithSuccessfulSending);
         LOGGER.info("Number of emails that were sent with failure - {} from {}. Emails - [{}] ", emailsWithFailedSending.size(), emails.size(), emailsWithFailedSending);
-    }
 
-    @Override
-    public SimpleMailMessage createMessageFromCryptocurrencyShortPriceInfo(CryptocurrencyShortPriceInfo cryptoPriceInfo) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom(emailUserName);
-
-        String cryptoName = cryptoPriceInfo.getCryptocurrencyName().toUpperCase();
-        PriceInCurrency cryptoPrice = cryptoPriceInfo.getPriceInCurrency();
-
-        simpleMailMessage.setSubject(String.format("%s rate", cryptoName));
-        simpleMailMessage.setText(String.format("1 %s = %d %s (%s)", cryptoName, cryptoPrice.getPrice(), cryptoPrice.getCurrency(), cryptoPrice.getCurrency().getName()));
-        return simpleMailMessage;
+        return sendingToAllSuccessful;
     }
 
     private List<String> getAllEmailsWithSpecificResultOfSending(Map<String, Boolean> emailsResultOfSendingMap, boolean wasSuccessfullySent) {

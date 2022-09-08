@@ -2,8 +2,10 @@ package com.example.bitcoingenesis.controllers;
 
 import com.example.bitcoingenesis.client.CryptoCurrencyClient;
 import com.example.bitcoingenesis.controller.EmailController;
+import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
 import com.example.bitcoingenesis.service.EmailService;
+import com.example.bitcoingenesis.service.MessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,16 +34,23 @@ public class EmailControllerTest {
     @Mock
     private CryptoCurrencyClient cryptoCurrencyClient;
 
+    @Mock
+    private MessageService messageService;
+
     @BeforeEach
     public void beforeTests() {
-        emailController = new EmailController(emailService, subscriberEmailDao, cryptoCurrencyClient);
+        emailController = new EmailController(emailService,
+                subscriberEmailDao,
+                cryptoCurrencyClient,
+                messageService,
+                EMAIL);
     }
 
     @Test
     public void sendEmails() {
         when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
-        when(cryptoCurrencyClient.getCryptoShortPriceInfo(CRYPTO, CURRENCY)).thenReturn(SHORT_PRICE_INFO);
-        when(emailService.createMessageFromCryptocurrencyShortPriceInfo(SHORT_PRICE_INFO)).thenReturn(SIMPLE_MAIL_MESSAGE);
+        when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
+        when(messageService.createPriceMessageFromCryptoPriceInfo(CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE), EMAIL));
 
         ResponseEntity<Void> response = emailController.sendEmails(CRYPTO, CURRENCY.toString());
 

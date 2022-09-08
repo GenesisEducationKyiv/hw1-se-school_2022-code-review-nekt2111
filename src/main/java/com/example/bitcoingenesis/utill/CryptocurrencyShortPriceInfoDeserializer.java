@@ -1,6 +1,6 @@
 package com.example.bitcoingenesis.utill;
 
-import com.example.bitcoingenesis.model.CryptocurrencyShortPriceInfo;
+import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.model.PriceInCurrency;
 import com.fasterxml.jackson.core.JsonParser;
@@ -10,29 +10,29 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 
-public class CryptocurrencyShortPriceInfoDeserializer extends JsonDeserializer<CryptocurrencyShortPriceInfo> {
+public class CryptocurrencyShortPriceInfoDeserializer extends JsonDeserializer<CryptoPriceInfo> {
 
     @Override
-    public CryptocurrencyShortPriceInfo deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException  {
+    public CryptoPriceInfo deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException  {
 
-        CryptocurrencyShortPriceInfo cryptocurrencyShortPriceInfo = new CryptocurrencyShortPriceInfo();
+        CryptoPriceInfo cryptoPriceInfo = new CryptoPriceInfo();
 
         ObjectCodec codec = jsonParser.getCodec();
         JsonNode jsonNode = codec.readTree(jsonParser);
 
-        cryptocurrencyShortPriceInfo.setCryptocurrencyName(getDeserializedCryptocurrencyName(jsonNode));
+        cryptoPriceInfo.setCryptocurrencyName(getDeserializedCryptocurrencyName(jsonNode));
 
-        JsonNodeUtil.getFirstChild(jsonNode).ifPresent(node -> setPriceInCurrencyValueForCrypto(node, cryptocurrencyShortPriceInfo));
+        JsonNodeUtil.getFirstChild(jsonNode).ifPresent(node -> setPriceInCurrencyValueForCrypto(node, cryptoPriceInfo));
 
-        return cryptocurrencyShortPriceInfo;
+        return cryptoPriceInfo;
     }
 
-    private void setPriceInCurrencyValueForCrypto(JsonNode jsonNode, CryptocurrencyShortPriceInfo cryptocurrencyShortPriceInfo) {
+    private void setPriceInCurrencyValueForCrypto(JsonNode jsonNode, CryptoPriceInfo cryptoPriceInfo) {
         PriceInCurrency priceInCurrency = new PriceInCurrency();
         priceInCurrency.setCurrency(getDeserializedPriceCurrency(jsonNode));
         priceInCurrency.setPrice(getDeserializedPriceValue(jsonNode));
 
-        cryptocurrencyShortPriceInfo.setPriceInCurrency(priceInCurrency);
+        cryptoPriceInfo.setPriceInCurrency(priceInCurrency);
     }
 
     private String getDeserializedCryptocurrencyName(JsonNode node) {
