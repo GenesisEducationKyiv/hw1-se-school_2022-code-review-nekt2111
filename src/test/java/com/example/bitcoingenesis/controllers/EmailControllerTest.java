@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.bitcoingenesis.util.TestConstants.*;
@@ -48,14 +49,34 @@ public class EmailControllerTest {
 
     @Test
     public void sendEmails() {
+
+        CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE);
+
         when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
         when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
-        when(messageService.createPriceMessageFromCryptoPriceInfo(CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE), EMAIL));
+        when(messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, EMAIL)).thenReturn(SIMPLE_MAIL_MESSAGE);
+        when(emailService.sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL))).thenReturn(true);
 
         ResponseEntity<Void> response = emailController.sendEmails(CRYPTO, CURRENCY.toString());
 
         verify(emailService).sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL));
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void sendEmailsFailed() {
+
+        CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE);
+
+        when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
+        when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
+        when(messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, EMAIL)).thenReturn(SIMPLE_MAIL_MESSAGE);
+        when(emailService.sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL))).thenReturn(false);
+
+        ResponseEntity<Void> response = emailController.sendEmails(CRYPTO, CURRENCY.toString());
+
+        verify(emailService).sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL));
+        assertEquals(HttpStatus.FAILED_DEPENDENCY, response.getStatusCode());
     }
 
 }
