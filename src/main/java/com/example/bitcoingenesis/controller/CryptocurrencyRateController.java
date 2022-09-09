@@ -22,12 +22,12 @@ public class CryptocurrencyRateController {
 
     @GetMapping
     public ResponseEntity<Integer> rate() {
-        return ResponseEntity.ok(cryptoCurrencyClient.getRateToLocalCurrency(defaultCryptoCurrency, defaultCurrency));
+        return ResponseEntity.ok(cryptoCurrencyClient.getCryptoRateToLocalCurrency(defaultCryptoCurrency, defaultCurrency));
     }
 
     @GetMapping("/{cryptocurrency}")
     public ResponseEntity<Integer> rateForCurrency(@PathVariable String cryptocurrency,
                                                    @RequestParam(required = false, defaultValue = defaultCurrencyStr) String currency) {
-        return ResponseEntity.ok(cryptoCurrencyClient.getRateToLocalCurrency(cryptocurrency, Currency.valueOf(currency.toUpperCase())));
+        return ResponseEntity.ok(cryptoCurrencyClient.getCryptoRateToLocalCurrency(cryptocurrency, Currency.valueOf(currency.toUpperCase())));
     }
 }

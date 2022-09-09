@@ -32,7 +32,7 @@ public class CryptocurrencyRateControllerTest {
     public void getRate() {
         Currency defaultCurrency = Currency.UAH;
         String defaultCrypto = "bitcoin";
-        when(cryptoCurrencyClient.getRateToLocalCurrency(defaultCrypto, defaultCurrency)).thenReturn(PRICE);
+        when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(defaultCrypto, defaultCurrency)).thenReturn(PRICE);
 
         ResponseEntity<Integer> response = cryptocurrencyRateController.rate();
 
@@ -45,7 +45,7 @@ public class CryptocurrencyRateControllerTest {
     public void getRateForCryptocurrency() {
         String currency = Currency.USD.toString();
         String crypto = "ethereum";
-        when(cryptoCurrencyClient.getRateToLocalCurrency(crypto, Currency.USD)).thenReturn(PRICE);
+        when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(crypto, Currency.USD)).thenReturn(PRICE);
 
         ResponseEntity<Integer> response = cryptocurrencyRateController.rateForCurrency(crypto, currency);
 

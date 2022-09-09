@@ -1,8 +1,7 @@
 package com.example.bitcoingenesis.client;
 
-import com.example.bitcoingenesis.model.CryptocurrencyShortPriceInfo;
+import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.model.PriceInCurrency;
 import com.example.bitcoingenesis.utill.CryptocurrencyShortPriceInfoDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.slf4j.Logger;
@@ -28,34 +27,18 @@ public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(CoinGeckoCurrencyClient.class);
 
     @Override
-    public Integer getRateToLocalCurrency(String cryptoCurrencyName, Currency currency) {
-        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", coinGeckoSimpleApiUrl, cryptoCurrencyName.toUpperCase(), currency, currency.getName());
+    public Integer getCryptoRateToLocalCurrency(String cryptoCurrencyName, Currency currency) {
+        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", coinGeckoSimpleApiUrl, cryptoCurrencyName.toUpperCase(), currency, currency.getFullName());
 
-        CryptocurrencyShortPriceInfo shortPriceInfo = restTemplate.getForEntity(UriComponentsBuilder
+        CryptoPriceInfo shortPriceInfo = restTemplate.getForEntity(UriComponentsBuilder
                 .fromHttpUrl(coinGeckoSimpleApiUrl)
                 .queryParam("ids", cryptoCurrencyName)
                 .queryParam("vs_currencies", currency)
-                .toUriString(), CryptocurrencyShortPriceInfo.class).getBody();
+                .toUriString(), CryptoPriceInfo.class).getBody();
 
         LOGGER.info("Received data {} ", shortPriceInfo);
 
-        return shortPriceInfo.getPriceInCurrency().getPrice();
-    }
-
-    @Override
-    public CryptocurrencyShortPriceInfo getCryptoShortPriceInfo(String cryptocurrencyName, Currency currency) {
-        CryptocurrencyShortPriceInfo shortPriceInfo = new CryptocurrencyShortPriceInfo();
-        shortPriceInfo.setCryptocurrencyName(cryptocurrencyName);
-
-        PriceInCurrency priceInCurrency = new PriceInCurrency();
-
-        priceInCurrency.setCurrency(currency);
-        priceInCurrency.setPrice(getRateToLocalCurrency(cryptocurrencyName, currency));
-
-        shortPriceInfo.setPriceInCurrency(priceInCurrency);
-
-        return shortPriceInfo;
-
+        return shortPriceInfo.getPrice();
     }
 
 }

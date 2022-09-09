@@ -6,13 +6,13 @@ public enum Currency {
 
     PLN("Polska zlota");
 
-    private final String name;
+    private final String fullName;
 
-    Currency(String name) {
-        this.name = name;
+    Currency(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 }
