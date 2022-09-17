@@ -2,7 +2,7 @@ package com.example.bitcoingenesis.repo;
 
 import java.util.List;
 
-public interface SubscriberEmailDao {
+public interface SubscriberEmailRepository {
 
     void insert(String email);
 

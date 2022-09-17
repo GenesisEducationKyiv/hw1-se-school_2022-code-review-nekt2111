@@ -1,6 +1,6 @@
 package com.example.bitcoingenesis.services;
 
-import com.example.bitcoingenesis.repo.SubscriberEmailDao;
+import com.example.bitcoingenesis.repo.SubscriberEmailRepository;
 import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
 import com.example.bitcoingenesis.service.email.SubscriptionEmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,25 +21,25 @@ public class SubscriptionEmailServiceTest {
     private SubscriptionEmailService subscriptionEmailService;
 
     @Mock
-    private SubscriberEmailDao subscriberEmailDao;
+    private SubscriberEmailRepository subscriberEmailRepository;
 
     @BeforeEach
     public void beforeTests() {
-        this.subscriptionEmailService = new SubscriptionEmailServiceImpl(subscriberEmailDao);
+        this.subscriptionEmailService = new SubscriptionEmailServiceImpl(subscriberEmailRepository);
     }
 
     @Test
     public void subscribe() {
         subscriptionEmailService.subscribe(EMAIL);
 
-        verify(subscriberEmailDao).insert(EMAIL);
+        verify(subscriberEmailRepository).insert(EMAIL);
     }
 
     @Test
     public void unsubscribe() {
         subscriptionEmailService.unsubscribe(EMAIL);
 
-        verify(subscriberEmailDao).delete(EMAIL);
+        verify(subscriberEmailRepository).delete(EMAIL);
     }
 
     @Test
@@ -48,12 +48,12 @@ public class SubscriptionEmailServiceTest {
 
         subscriptionEmailService.updateSubscribedEmail(EMAIL, newEmail);
 
-        verify(subscriberEmailDao).update(EMAIL, newEmail);
+        verify(subscriberEmailRepository).update(EMAIL, newEmail);
     }
 
     @Test
     public void getAllSubscribedEmails() {
-        when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
+        when(subscriberEmailRepository.findAll()).thenReturn(List.of(EMAIL));
 
         List<String> subscribedEmails = subscriptionEmailService.getAllSubscribedEmails();
 
@@ -62,7 +62,7 @@ public class SubscriptionEmailServiceTest {
 
     @Test
     public void isSubscribedTrue() {
-        when(subscriberEmailDao.findByName(EMAIL)).thenReturn(EMAIL);
+        when(subscriberEmailRepository.findByName(EMAIL)).thenReturn(EMAIL);
 
         boolean isSubscribed = subscriptionEmailService.isSubscribed(EMAIL);
 
@@ -71,7 +71,7 @@ public class SubscriptionEmailServiceTest {
 
     @Test
     public void isSubscribedFalse() {
-        when(subscriberEmailDao.findByName(EMAIL)).thenReturn(null);
+        when(subscriberEmailRepository.findByName(EMAIL)).thenReturn(null);
 
         boolean isSubscribed = subscriptionEmailService.isSubscribed(EMAIL);
 

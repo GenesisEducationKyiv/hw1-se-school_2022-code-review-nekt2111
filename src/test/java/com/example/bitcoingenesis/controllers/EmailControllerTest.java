@@ -2,7 +2,7 @@ package com.example.bitcoingenesis.controllers;
 
 import com.example.bitcoingenesis.controller.EmailController;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
-import com.example.bitcoingenesis.repo.SubscriberEmailDao;
+import com.example.bitcoingenesis.repo.SubscriberEmailRepository;
 import com.example.bitcoingenesis.service.email.EmailService;
 import com.example.bitcoingenesis.service.message.MessageService;
 import com.example.bitcoingenesis.service.rate.CryptoRateService;
@@ -29,7 +29,7 @@ public class EmailControllerTest {
     private EmailService emailService;
 
     @Mock
-    private SubscriberEmailDao subscriberEmailDao;
+    private SubscriberEmailRepository subscriberEmailRepository;
 
     @Mock
     private CryptoRateService cryptoRateService;
@@ -40,7 +40,7 @@ public class EmailControllerTest {
     @BeforeEach
     public void beforeTests() {
         emailController = new EmailController(emailService,
-                subscriberEmailDao,
+                subscriberEmailRepository,
                 cryptoRateService,
                 messageService,
                 EMAIL);
@@ -51,7 +51,7 @@ public class EmailControllerTest {
 
         CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE);
 
-        when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
+        when(subscriberEmailRepository.findAll()).thenReturn(List.of(EMAIL));
         when(cryptoRateService.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
         when(messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, EMAIL)).thenReturn(SIMPLE_MAIL_MESSAGE);
         when(emailService.sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL))).thenReturn(true);
@@ -67,7 +67,7 @@ public class EmailControllerTest {
 
         CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE);
 
-        when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
+        when(subscriberEmailRepository.findAll()).thenReturn(List.of(EMAIL));
         when(cryptoRateService.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
         when(messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, EMAIL)).thenReturn(SIMPLE_MAIL_MESSAGE);
         when(emailService.sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL))).thenReturn(false);
