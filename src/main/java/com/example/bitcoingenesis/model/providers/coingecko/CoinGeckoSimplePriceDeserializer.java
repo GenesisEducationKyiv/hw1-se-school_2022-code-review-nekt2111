@@ -1,8 +1,10 @@
-package com.example.bitcoingenesis.utill;
+package com.example.bitcoingenesis.model.providers.coingecko;
 
+import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.model.PriceInCurrency;
+import com.example.bitcoingenesis.utill.JsonNodeUtil;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -10,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 
-public class CryptocurrencyShortPriceInfoDeserializer extends JsonDeserializer<CryptoPriceInfo> {
+public class CoinGeckoSimplePriceDeserializer extends JsonDeserializer<CryptoPriceInfo> {
 
     @Override
     public CryptoPriceInfo deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException  {
@@ -20,7 +22,7 @@ public class CryptocurrencyShortPriceInfoDeserializer extends JsonDeserializer<C
         ObjectCodec codec = jsonParser.getCodec();
         JsonNode jsonNode = codec.readTree(jsonParser);
 
-        cryptoPriceInfo.setCryptocurrencyName(getDeserializedCryptocurrencyName(jsonNode));
+        cryptoPriceInfo.setCrypto(getDeserializedCrypto(jsonNode));
 
         JsonNodeUtil.getFirstChild(jsonNode).ifPresent(node -> setPriceInCurrencyValueForCrypto(node, cryptoPriceInfo));
 
@@ -35,8 +37,8 @@ public class CryptocurrencyShortPriceInfoDeserializer extends JsonDeserializer<C
         cryptoPriceInfo.setPriceInCurrency(priceInCurrency);
     }
 
-    private String getDeserializedCryptocurrencyName(JsonNode node) {
-        return JsonNodeUtil.getFirstKeyAsString(node);
+    private Crypto getDeserializedCrypto(JsonNode node) {
+        return Crypto.fromFullName(JsonNodeUtil.getFirstKeyAsString(node));
     }
 
     private Currency getDeserializedPriceCurrency(JsonNode node) {

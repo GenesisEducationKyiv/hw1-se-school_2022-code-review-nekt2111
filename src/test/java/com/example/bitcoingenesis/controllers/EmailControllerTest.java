@@ -1,11 +1,11 @@
 package com.example.bitcoingenesis.controllers;
 
-import com.example.bitcoingenesis.client.CryptoCurrencyClient;
 import com.example.bitcoingenesis.controller.EmailController;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
-import com.example.bitcoingenesis.service.EmailService;
-import com.example.bitcoingenesis.service.MessageService;
+import com.example.bitcoingenesis.service.email.EmailService;
+import com.example.bitcoingenesis.service.message.MessageService;
+import com.example.bitcoingenesis.service.rate.CryptoRateService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.bitcoingenesis.util.TestConstants.*;
@@ -33,7 +32,7 @@ public class EmailControllerTest {
     private SubscriberEmailDao subscriberEmailDao;
 
     @Mock
-    private CryptoCurrencyClient cryptoCurrencyClient;
+    private CryptoRateService cryptoRateService;
 
     @Mock
     private MessageService messageService;
@@ -42,7 +41,7 @@ public class EmailControllerTest {
     public void beforeTests() {
         emailController = new EmailController(emailService,
                 subscriberEmailDao,
-                cryptoCurrencyClient,
+                cryptoRateService,
                 messageService,
                 EMAIL);
     }
@@ -53,11 +52,11 @@ public class EmailControllerTest {
         CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE);
 
         when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
-        when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
+        when(cryptoRateService.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
         when(messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, EMAIL)).thenReturn(SIMPLE_MAIL_MESSAGE);
         when(emailService.sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL))).thenReturn(true);
 
-        ResponseEntity<Void> response = emailController.sendEmails(CRYPTO, CURRENCY.toString());
+        ResponseEntity<Void> response = emailController.sendEmails(CRYPTO.getFullName(), CURRENCY.toString());
 
         verify(emailService).sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL));
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -69,11 +68,11 @@ public class EmailControllerTest {
         CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(CRYPTO, CURRENCY,PRICE);
 
         when(subscriberEmailDao.findAll()).thenReturn(List.of(EMAIL));
-        when(cryptoCurrencyClient.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
+        when(cryptoRateService.getCryptoRateToLocalCurrency(CRYPTO, CURRENCY)).thenReturn(PRICE);
         when(messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, EMAIL)).thenReturn(SIMPLE_MAIL_MESSAGE);
         when(emailService.sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL))).thenReturn(false);
 
-        ResponseEntity<Void> response = emailController.sendEmails(CRYPTO, CURRENCY.toString());
+        ResponseEntity<Void> response = emailController.sendEmails(CRYPTO.getFullName(), CURRENCY.toString());
 
         verify(emailService).sendEmailToAll(SIMPLE_MAIL_MESSAGE, List.of(EMAIL));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, response.getStatusCode());

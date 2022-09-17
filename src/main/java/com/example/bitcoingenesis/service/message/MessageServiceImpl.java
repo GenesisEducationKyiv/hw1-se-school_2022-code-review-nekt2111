@@ -1,7 +1,8 @@
-package com.example.bitcoingenesis.service;
+package com.example.bitcoingenesis.service.message;
 
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
+import com.example.bitcoingenesis.service.message.MessageService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public SimpleMailMessage createPriceMessageFromCryptoPriceInfo(CryptoPriceInfo cryptoPriceInfo, String fromEmail) {
-        String cryptoName = cryptoPriceInfo.getCryptocurrencyName().toUpperCase();
+        String cryptoName = cryptoPriceInfo.getCrypto().getFullName().toUpperCase();
 
         String messageSubject = createSubjectForPriceMessage(cryptoName, cryptoPriceInfo.getCurrency());
         String messageText = createTextForPriceMessage(cryptoName, cryptoPriceInfo.getPrice(), cryptoPriceInfo.getCurrency());

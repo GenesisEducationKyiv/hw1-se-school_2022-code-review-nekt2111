@@ -1,6 +1,6 @@
 package com.example.bitcoingenesis.controller;
 
-import com.example.bitcoingenesis.service.SubscriptionEmailService;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

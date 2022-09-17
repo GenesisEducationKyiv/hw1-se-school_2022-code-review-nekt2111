@@ -1,7 +1,7 @@
 package com.example.bitcoingenesis.controllers;
 
 import com.example.bitcoingenesis.controller.SubscriptionController;
-import com.example.bitcoingenesis.service.SubscriptionEmailService;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

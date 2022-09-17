@@ -1,7 +1,7 @@
 package com.example.bitcoingenesis.controller;
 
-import com.example.bitcoingenesis.service.EmailValidationService;
-import com.example.bitcoingenesis.service.SubscriptionEmailService;
+import com.example.bitcoingenesis.service.email.EmailValidationService;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

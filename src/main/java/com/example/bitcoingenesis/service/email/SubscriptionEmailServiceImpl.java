@@ -1,6 +1,7 @@
-package com.example.bitcoingenesis.service;
+package com.example.bitcoingenesis.service.email;
 
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

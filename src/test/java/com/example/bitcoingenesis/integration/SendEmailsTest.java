@@ -17,7 +17,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.bitcoingenesis.util.TestConstants.EMAIL;
@@ -56,6 +55,7 @@ public class SendEmailsTest {
     public void setUp() {
         baseUrl = baseUrl.concat(":").concat(port + "").concat(defaultContextPath);
     }
+
 
     @Test
     public void sendEmails() {

@@ -1,8 +1,8 @@
 package com.example.bitcoingenesis.services;
 
 import com.example.bitcoingenesis.repo.SubscriberEmailDao;
-import com.example.bitcoingenesis.service.SubscriptionEmailService;
-import com.example.bitcoingenesis.service.SubscriptionEmailServiceImpl;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

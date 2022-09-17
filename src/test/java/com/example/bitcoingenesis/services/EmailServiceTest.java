@@ -1,13 +1,14 @@
 package com.example.bitcoingenesis.services;
 
-import com.example.bitcoingenesis.service.EmailService;
-import com.example.bitcoingenesis.service.EmailServiceImpl;
+import com.example.bitcoingenesis.service.email.EmailService;
+import com.example.bitcoingenesis.service.email.EmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
 import java.util.List;
 
 import static com.example.bitcoingenesis.util.TestConstants.*;
