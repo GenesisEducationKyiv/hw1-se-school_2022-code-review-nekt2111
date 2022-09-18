@@ -5,7 +5,7 @@ import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.repo.SubscriberEmailRepository;
 import com.example.bitcoingenesis.service.email.EmailService;
 import com.example.bitcoingenesis.service.message.MessageService;
-import com.example.bitcoingenesis.service.rate.CryptoRateService;
+import com.example.bitcoingenesis.service.rate.CryptoRateServiceProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,7 +32,7 @@ public class EmailControllerTest {
     private SubscriberEmailRepository subscriberEmailRepository;
 
     @Mock
-    private CryptoRateService cryptoRateService;
+    private CryptoRateServiceProxy cryptoRateService;
 
     @Mock
     private MessageService messageService;

@@ -2,7 +2,7 @@ package com.example.bitcoingenesis.controllers;
 
 import com.example.bitcoingenesis.controller.CryptocurrencyRateController;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.service.rate.CryptoRateService;
+import com.example.bitcoingenesis.service.rate.CryptoRateServiceProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,7 +22,7 @@ public class CryptocurrencyRateControllerTest {
     private CryptocurrencyRateController cryptocurrencyRateController;
 
     @Mock
-    private CryptoRateService cryptoRateService;
+    private CryptoRateServiceProxy cryptoRateService;
 
     @BeforeEach
     public void beforeTests() {

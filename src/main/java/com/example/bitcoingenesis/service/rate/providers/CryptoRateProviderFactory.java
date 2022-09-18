@@ -1,4 +1,4 @@
-package com.example.bitcoingenesis.model.providers;
+package com.example.bitcoingenesis.service.rate.providers;
 
 import java.util.List;
 

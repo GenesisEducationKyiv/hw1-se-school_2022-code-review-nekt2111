@@ -1,9 +1,8 @@
 package com.example.bitcoingenesis.controller;
 
-import com.example.bitcoingenesis.client.CryptoCurrencyClient;
 import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.service.rate.CryptoRateService;
+import com.example.bitcoingenesis.service.rate.CryptoRateServiceProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rate")
 public class CryptocurrencyRateController {
 
-    private final CryptoRateService cryptoRateService;
+    private final CryptoRateServiceProxy cryptoRateService;
 
-    public CryptocurrencyRateController(CryptoRateService cryptoRateService) {
+    public CryptocurrencyRateController(CryptoRateServiceProxy cryptoRateService) {
         this.cryptoRateService = cryptoRateService;
     }
 

@@ -1,19 +1,12 @@
 package com.example.bitcoingenesis.configuration;
 
-import com.example.bitcoingenesis.client.CoinGeckoCurrencyClient;
-import com.example.bitcoingenesis.client.CoinbaseCurrencyClient;
-import com.example.bitcoingenesis.client.KucoinCurrencyClient;
-import com.example.bitcoingenesis.model.Crypto;
-import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderChain;
-import com.example.bitcoingenesis.model.providers.main.coinbase.CoinBaseProviderFactory;
-import com.example.bitcoingenesis.model.providers.main.coingecko.CoinGeckoProvider;
-import com.example.bitcoingenesis.model.providers.main.coingecko.CoinGeckoProviderFactory;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderFactory;
-import com.example.bitcoingenesis.model.providers.exceptional.kucoin.KucoinProviderFactory;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderChain;
+import com.example.bitcoingenesis.service.rate.providers.main.coinbase.CoinBaseProviderFactory;
+import com.example.bitcoingenesis.service.rate.providers.main.coingecko.CoinGeckoProviderFactory;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderFactory;
+import com.example.bitcoingenesis.service.rate.providers.exceptional.kucoin.KucoinProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

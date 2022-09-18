@@ -1,13 +1,10 @@
-package com.example.bitcoingenesis.model.providers.main.coinbase;
+package com.example.bitcoingenesis.service.rate.providers.main.coinbase;
 
 import com.example.bitcoingenesis.client.CoinbaseCurrencyClient;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderChain;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderFactory;
-import com.example.bitcoingenesis.model.providers.exceptional.kucoin.KucoinProvider;
-import com.example.bitcoingenesis.model.providers.exceptional.kucoin.KucoinProviderFactory;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderChain;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

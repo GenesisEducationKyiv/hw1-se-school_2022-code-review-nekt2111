@@ -1,4 +1,4 @@
-package com.example.bitcoingenesis.model.providers.main.coingecko;
+package com.example.bitcoingenesis.service.rate.providers.main.coingecko;
 
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.PriceInCurrency;

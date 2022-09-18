@@ -1,15 +1,15 @@
-package com.example.bitcoingenesis.model.providers.main.coinbase;
+package com.example.bitcoingenesis.service.rate.providers.main.coinbase;
 
 import com.example.bitcoingenesis.client.CoinbaseCurrencyClient;
 import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderChain;
-import com.example.bitcoingenesis.model.providers.exceptional.kucoin.KucoinProviderFactory;
-import com.example.bitcoingenesis.model.providers.main.coingecko.CoinGeckoProvider;
+import com.example.bitcoingenesis.service.rate.CryptoRateService;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderChain;
+import com.example.bitcoingenesis.service.rate.providers.main.coingecko.CoinGeckoProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CoinBaseProvider extends CryptoRateProviderChain {
+public class CoinBaseProvider extends CryptoRateProviderChain  {
 
     private final CoinbaseCurrencyClient coinbaseCurrencyClient;
 

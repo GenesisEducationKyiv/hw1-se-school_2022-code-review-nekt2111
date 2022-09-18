@@ -1,4 +1,4 @@
-package com.example.bitcoingenesis.model.providers.exceptional.kucoin;
+package com.example.bitcoingenesis.service.rate.providers.exceptional.kucoin;
 
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.PriceInCurrency;

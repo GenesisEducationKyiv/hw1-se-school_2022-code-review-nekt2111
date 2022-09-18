@@ -1,9 +1,9 @@
-package com.example.bitcoingenesis.model.providers.main.coingecko;
+package com.example.bitcoingenesis.service.rate.providers.main.coingecko;
 
 import com.example.bitcoingenesis.client.CoinGeckoCurrencyClient;
 import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderChain;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

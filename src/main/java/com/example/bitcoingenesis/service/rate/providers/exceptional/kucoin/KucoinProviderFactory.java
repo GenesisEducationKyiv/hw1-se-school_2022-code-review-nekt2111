@@ -1,9 +1,8 @@
-package com.example.bitcoingenesis.model.providers.exceptional.kucoin;
+package com.example.bitcoingenesis.service.rate.providers.exceptional.kucoin;
 
 import com.example.bitcoingenesis.client.KucoinCurrencyClient;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderChain;
-import com.example.bitcoingenesis.model.providers.CryptoRateProviderFactory;
-import com.example.bitcoingenesis.model.providers.main.coingecko.CoinGeckoProvider;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderChain;
+import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
