@@ -63,13 +63,13 @@ public class CryptoProviderConfiguration {
         LOGGER.info("{} - Exceptional provider for main was created", exceptionalProviderChain);
 
         if (Objects.equals(cryptoRateProvider, "coinbase")) {
-            CryptoRateProviderChain coinbaseProvider = coinBaseProviderFactory.createProvider();
-            exceptionalProviderChain.setNext(coinbaseProvider);
-            LOGGER.info("Exceptional provider for - {} is {}", exceptionalProviderChain, coinbaseProvider);
-        } else if (Objects.equals(cryptoRateProvider, "coingecko")) {
             CryptoRateProviderChain coingecko = coinGeckoProviderFactory.createProvider();
             exceptionalProviderChain.setNext(coingecko);
             LOGGER.info("Exceptional provider for - {} is {}", exceptionalProviderChain, coingecko);
+        } else if (Objects.equals(cryptoRateProvider, "coingecko")) {
+            CryptoRateProviderChain coinbaseProvider = coinBaseProviderFactory.createProvider();
+            exceptionalProviderChain.setNext(coinbaseProvider);
+            LOGGER.info("Exceptional provider for - {} is {}", exceptionalProviderChain, coinbaseProvider);
         }
 
         LOGGER.info("Exceptional crypto rate provider chain was configured");
