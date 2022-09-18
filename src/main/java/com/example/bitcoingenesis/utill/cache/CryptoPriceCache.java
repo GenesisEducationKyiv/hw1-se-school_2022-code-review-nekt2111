@@ -1,17 +1,14 @@
 package com.example.bitcoingenesis.utill.cache;
 
 import com.example.bitcoingenesis.model.Crypto;
-import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
-@Component
 public class CryptoPriceCache {
 
     private static final int EXPIRES_IN_MINUTES = 5;

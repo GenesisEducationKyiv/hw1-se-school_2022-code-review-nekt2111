@@ -6,6 +6,6 @@ public interface CryptoRateProviderFactory {
 
     CryptoRateProviderChain createProvider();
 
-    void setExceptionalProviders(List<CryptoRateProviderChain> exceptionalProviders);
+    void setCryptoProviderExceptionalChain(CryptoRateProviderChain cryptoProviderExceptionalChain);
 
 }

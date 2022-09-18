@@ -25,18 +25,24 @@ public class CoinGeckoCurrencyClient implements CryptoCurrencyClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(CoinGeckoCurrencyClient.class);
 
     @Override
-    public Integer getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
-        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", coinGeckoSimpleApiUrl, crypto.getFullName(), currency, currency.getFullName());
-
+    public CryptoPriceInfo getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
         CryptoPriceInfo shortPriceInfo = coinGeckoRestTemplate.getForEntity(UriComponentsBuilder
                 .fromHttpUrl(coinGeckoSimpleApiUrl)
                 .queryParam("ids", crypto.getFullName())
                 .queryParam("vs_currencies", currency)
                 .toUriString(), CryptoPriceInfo.class).getBody();
 
-        LOGGER.info("Received data {} ", shortPriceInfo);
+        return shortPriceInfo;
+    }
 
-        return shortPriceInfo.getPrice();
+    @Override
+    public String getApiUrl() {
+        return coinGeckoSimpleApiUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Coingecko client";
     }
 
 }

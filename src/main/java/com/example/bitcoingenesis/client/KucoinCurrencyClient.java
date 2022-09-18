@@ -27,10 +27,7 @@ public class KucoinCurrencyClient implements CryptoCurrencyClient{
     }
 
     @Override
-    public Integer getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
-
-        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", kucoinFiatPriceApiUrl, crypto.getFullName(), currency, currency.getFullName());
-
+    public CryptoPriceInfo getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
         CryptoPriceInfo shortPriceInfo = kucoinRestTemplate.getForEntity(UriComponentsBuilder
                 .fromHttpUrl(kucoinFiatPriceApiUrl)
                 .queryParam("base", currency)
@@ -39,8 +36,16 @@ public class KucoinCurrencyClient implements CryptoCurrencyClient{
 
         shortPriceInfo.setCurrency(currency);
 
-        LOGGER.info("Received data {} ", shortPriceInfo);
+        return shortPriceInfo;
+    }
 
-        return shortPriceInfo.getPrice();
+    @Override
+    public String getApiUrl() {
+        return kucoinFiatPriceApiUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Kucoin client";
     }
 }

@@ -6,6 +6,7 @@ import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.repo.SubscriberEmailRepository;
 import com.example.bitcoingenesis.service.email.EmailService;
 import com.example.bitcoingenesis.service.message.MessageService;
+import com.example.bitcoingenesis.service.rate.CryptoRateService;
 import com.example.bitcoingenesis.service.rate.CryptoRateServiceProxy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -23,14 +24,14 @@ import java.util.List;
 public class EmailController {
     private final EmailService emailService;
     private final SubscriberEmailRepository subscriberEmailRepository;
-    private final CryptoRateServiceProxy cryptoRateService;
+    private final CryptoRateService cryptoRateService;
     private final MessageService messageService;
 
     private final String email;
 
     public EmailController(EmailService emailService,
                            SubscriberEmailRepository subscriberEmailRepository,
-                           CryptoRateServiceProxy cryptoRateService,
+                           CryptoRateService cryptoRateService,
                            MessageService messageService,
                            @Value("${spring.mail.username}") String email) {
         this.emailService = emailService;

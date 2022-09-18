@@ -1,7 +1,7 @@
 package com.example.bitcoingenesis.configuration.templates;
 
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
-import com.example.bitcoingenesis.service.rate.providers.exceptional.kucoin.KucoinFiatPriceDeserializer;
+import com.example.bitcoingenesis.service.rate.providers.kucoin.KucoinFiatPriceDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.http.converter.HttpMessageConverter;

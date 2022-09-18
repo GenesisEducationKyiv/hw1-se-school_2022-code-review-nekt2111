@@ -1,4 +1,4 @@
-package com.example.bitcoingenesis.service.rate.providers.main.coinbase;
+package com.example.bitcoingenesis.service.rate.providers.coinbase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

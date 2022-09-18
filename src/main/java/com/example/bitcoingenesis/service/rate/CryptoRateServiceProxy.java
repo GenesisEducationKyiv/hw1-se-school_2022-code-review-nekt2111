@@ -7,11 +7,8 @@ import com.example.bitcoingenesis.service.rate.providers.CryptoRateProviderFacto
 import com.example.bitcoingenesis.utill.cache.CryptoPriceCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 
-
-@Service
 public class CryptoRateServiceProxy implements CryptoRateService {
 
     private final CryptoRateProviderChain cryptoRateProviderChain;
