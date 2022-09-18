@@ -1,4 +1,4 @@
-package com.example.bitcoingenesis.service;
+package com.example.bitcoingenesis.service.email;
 
 import java.util.List;
 

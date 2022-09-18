@@ -1,11 +1,13 @@
 package com.example.bitcoingenesis.controller;
 
-import com.example.bitcoingenesis.client.CryptoCurrencyClient;
+import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.repo.SubscriberEmailDao;
-import com.example.bitcoingenesis.service.EmailService;
-import com.example.bitcoingenesis.service.MessageService;
+import com.example.bitcoingenesis.repo.SubscriberEmailRepository;
+import com.example.bitcoingenesis.service.email.EmailService;
+import com.example.bitcoingenesis.service.message.MessageService;
+import com.example.bitcoingenesis.service.rate.CryptoRateService;
+import com.example.bitcoingenesis.service.rate.CryptoRateServiceProxy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +23,20 @@ import java.util.List;
 @RequestMapping("/sendEmails")
 public class EmailController {
     private final EmailService emailService;
-    private final SubscriberEmailDao subscriberEmailDao;
-    private final CryptoCurrencyClient cryptoCurrencyClient;
+    private final SubscriberEmailRepository subscriberEmailRepository;
+    private final CryptoRateService cryptoRateService;
     private final MessageService messageService;
 
     private final String email;
 
     public EmailController(EmailService emailService,
-                           SubscriberEmailDao subscriberEmailDao,
-                           CryptoCurrencyClient cryptoCurrencyClient,
+                           SubscriberEmailRepository subscriberEmailRepository,
+                           CryptoRateService cryptoRateService,
                            MessageService messageService,
                            @Value("${spring.mail.username}") String email) {
         this.emailService = emailService;
-        this.subscriberEmailDao = subscriberEmailDao;
-        this.cryptoCurrencyClient = cryptoCurrencyClient;
+        this.subscriberEmailRepository = subscriberEmailRepository;
+        this.cryptoRateService = cryptoRateService;
         this.messageService = messageService;
         this.email = email;
     }
@@ -52,10 +54,10 @@ public class EmailController {
     }
 
     private boolean sendEmailsWithRateOfCryptoInCurrency(String crypto, Currency currency) {
-        List<String> emails = subscriberEmailDao.findAll();
+        List<String> emails = subscriberEmailRepository.findAll();
 
-        Integer price = cryptoCurrencyClient.getCryptoRateToLocalCurrency(crypto, currency);
-        CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(crypto, currency, price);
+        Integer price = cryptoRateService.getCryptoRateToLocalCurrency(Crypto.fromFullName(crypto), currency);
+        CryptoPriceInfo cryptoPriceInfo = CryptoPriceInfo.createCryptoPriceInfo(Crypto.fromFullName(crypto), currency, price);
 
         SimpleMailMessage mailMessage = messageService.createPriceMessageFromCryptoPriceInfo(cryptoPriceInfo, email);
         return emailService.sendEmailToAll(mailMessage, emails);

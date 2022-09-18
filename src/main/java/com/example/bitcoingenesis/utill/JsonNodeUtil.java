@@ -1,8 +1,11 @@
 package com.example.bitcoingenesis.utill;
 
+import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.Currency;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 
 public class JsonNodeUtil {
@@ -34,6 +37,39 @@ public class JsonNodeUtil {
             return Currency.valueOf(jsonNode.fieldNames().next().toUpperCase());
         }
         return null;
+    }
+
+    public static Optional<JsonNode> findJsonNodeByKeyName(JsonNode jsonNode, String key) {
+
+        Iterator<String> nodeIterator = jsonNode.fieldNames();
+        Iterator<JsonNode> jsonNodeIterator = jsonNode.elements();
+
+        while (nodeIterator.hasNext()) {
+            String currentKeyName = nodeIterator.next();
+            JsonNode currentJsonNode = jsonNodeIterator.next();
+
+            if (Objects.equals(currentKeyName, key)) {
+                return Optional.ofNullable(currentJsonNode);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public static Crypto getDeserializedCryptoFromFullName(JsonNode node) {
+        return Crypto.fromFullName(JsonNodeUtil.getFirstKeyAsString(node));
+    }
+
+    public static Crypto getDeserializedCryptoFromShortName(JsonNode node) {
+        return Crypto.valueOf(JsonNodeUtil.getFirstKeyAsString(node));
+    }
+
+    public static Currency getDeserializedPriceCurrency(JsonNode node) {
+        return JsonNodeUtil.getFirstKeyAsCurrency(node);
+    }
+
+    public static Integer getDeserializedPriceValue(JsonNode node) {
+        return JsonNodeUtil.getFirstValueAsInteger(node);
     }
 
 }

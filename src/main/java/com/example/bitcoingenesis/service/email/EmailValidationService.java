@@ -1,4 +1,4 @@
-package com.example.bitcoingenesis.service;
+package com.example.bitcoingenesis.service.email;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

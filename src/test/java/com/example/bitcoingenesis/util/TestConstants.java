@@ -1,5 +1,6 @@
 package com.example.bitcoingenesis.util;
 
+import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.model.PriceInCurrency;
@@ -12,7 +13,7 @@ public final class TestConstants {
     public static final String SERVER_EMAIL = "genesisbitcoin@ukr.net";
     public static final Currency CURRENCY = Currency.UAH;
     public static final int PRICE = 100_000;
-    public static final String CRYPTO = "BITCOIN";
+    public static final Crypto CRYPTO = Crypto.BTC;
 
     public static final String CRYPTO_CURRENCY_CLIENT_URL = "TEST_URL";
 
@@ -30,7 +31,7 @@ public final class TestConstants {
 
     private static CryptoPriceInfo generateShortPriceInfo() {
         CryptoPriceInfo cryptoPriceInfo = new CryptoPriceInfo();
-        cryptoPriceInfo.setCryptocurrencyName(CRYPTO);
+        cryptoPriceInfo.setCrypto(CRYPTO);
 
         PriceInCurrency priceInCurrency = new PriceInCurrency();
         priceInCurrency.setPrice(PRICE);

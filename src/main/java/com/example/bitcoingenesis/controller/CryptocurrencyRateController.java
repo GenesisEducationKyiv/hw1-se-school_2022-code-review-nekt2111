@@ -1,7 +1,9 @@
 package com.example.bitcoingenesis.controller;
 
-import com.example.bitcoingenesis.client.CryptoCurrencyClient;
+import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.Currency;
+import com.example.bitcoingenesis.service.rate.CryptoRateService;
+import com.example.bitcoingenesis.service.rate.CryptoRateServiceProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rate")
 public class CryptocurrencyRateController {
 
-    private final CryptoCurrencyClient cryptoCurrencyClient;
+    private final CryptoRateService cryptoRateService;
 
-    public CryptocurrencyRateController(CryptoCurrencyClient cryptoCurrencyClient) {
-        this.cryptoCurrencyClient = cryptoCurrencyClient;
+    public CryptocurrencyRateController(CryptoRateService cryptoRateService) {
+        this.cryptoRateService = cryptoRateService;
     }
 
     private final Currency defaultCurrency = Currency.UAH;
@@ -22,12 +24,12 @@ public class CryptocurrencyRateController {
 
     @GetMapping
     public ResponseEntity<Integer> rate() {
-        return ResponseEntity.ok(cryptoCurrencyClient.getCryptoRateToLocalCurrency(defaultCryptoCurrency, defaultCurrency));
+        return ResponseEntity.ok(cryptoRateService.getCryptoRateToLocalCurrency(Crypto.fromFullName(defaultCryptoCurrency), defaultCurrency));
     }
 
     @GetMapping("/{cryptocurrency}")
     public ResponseEntity<Integer> rateForCurrency(@PathVariable String cryptocurrency,
                                                    @RequestParam(required = false, defaultValue = defaultCurrencyStr) String currency) {
-        return ResponseEntity.ok(cryptoCurrencyClient.getCryptoRateToLocalCurrency(cryptocurrency, Currency.valueOf(currency.toUpperCase())));
+        return ResponseEntity.ok(cryptoRateService.getCryptoRateToLocalCurrency(Crypto.fromFullName(cryptocurrency), Currency.valueOf(currency.toUpperCase())));
     }
 }

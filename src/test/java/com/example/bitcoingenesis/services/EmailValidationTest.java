@@ -1,6 +1,6 @@
 package com.example.bitcoingenesis.services;
 
-import com.example.bitcoingenesis.service.EmailValidationService;
+import com.example.bitcoingenesis.service.email.EmailValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

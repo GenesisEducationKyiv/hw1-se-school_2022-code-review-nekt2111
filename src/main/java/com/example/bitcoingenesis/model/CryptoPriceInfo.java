@@ -1,18 +1,15 @@
 package com.example.bitcoingenesis.model;
 
-import com.example.bitcoingenesis.utill.CryptocurrencyShortPriceInfoDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 
 @Data
-@JsonDeserialize(using = CryptocurrencyShortPriceInfoDeserializer.class)
 public class CryptoPriceInfo {
-    private String cryptocurrencyName;
+    private Crypto crypto;
     private PriceInCurrency priceInCurrency;
 
-    public static CryptoPriceInfo createCryptoPriceInfo(String cryptocurrencyName, Currency currency, Integer price) {
+    public static CryptoPriceInfo createCryptoPriceInfo(Crypto crypto, Currency currency, Integer price) {
         CryptoPriceInfo shortPriceInfo = new CryptoPriceInfo();
-        shortPriceInfo.setCryptocurrencyName(cryptocurrencyName);
+        shortPriceInfo.setCrypto(crypto);
 
         PriceInCurrency priceInCurrency = new PriceInCurrency();
 
@@ -30,5 +27,13 @@ public class CryptoPriceInfo {
 
     public Currency getCurrency() {
         return priceInCurrency.getCurrency();
+    }
+
+    public void setPrice(Integer price) {
+        priceInCurrency.setPrice(price);
+    }
+
+    public void setCurrency(Currency currency) {
+        priceInCurrency.setCurrency(currency);
     }
 }

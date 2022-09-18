@@ -1,8 +1,8 @@
 package com.example.bitcoingenesis.controllers;
 
 import com.example.bitcoingenesis.controller.SubscribeEmailController;
-import com.example.bitcoingenesis.service.EmailValidationService;
-import com.example.bitcoingenesis.service.SubscriptionEmailService;
+import com.example.bitcoingenesis.service.email.EmailValidationService;
+import com.example.bitcoingenesis.service.email.SubscriptionEmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
