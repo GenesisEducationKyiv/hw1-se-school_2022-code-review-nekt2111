@@ -28,4 +28,12 @@ public class CryptoPriceInfo {
     public Currency getCurrency() {
         return priceInCurrency.getCurrency();
     }
+
+    public void setPrice(Integer price) {
+        priceInCurrency.setPrice(price);
+    }
+
+    public void setCurrency(Currency currency) {
+        priceInCurrency.setCurrency(currency);
+    }
 }

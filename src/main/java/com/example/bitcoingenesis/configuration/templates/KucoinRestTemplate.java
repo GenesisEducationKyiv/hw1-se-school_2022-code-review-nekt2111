@@ -1,7 +1,7 @@
 package com.example.bitcoingenesis.configuration.templates;
 
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
-import com.example.bitcoingenesis.model.providers.main.coingecko.CoinGeckoSimplePriceDeserializer;
+import com.example.bitcoingenesis.model.providers.exceptional.kucoin.KucoinFiatPriceDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -10,15 +10,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class CoinGeckoRestTemplate extends RestTemplate {
+public class KucoinRestTemplate extends RestTemplate {
 
-    public CoinGeckoRestTemplate() {
+    public KucoinRestTemplate() {
         this.setMessageConverters(httpMessageConverters());
     }
 
+
     private static List<HttpMessageConverter<?>> httpMessageConverters() {
         SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addDeserializer(CryptoPriceInfo.class, new CoinGeckoSimplePriceDeserializer());
+        simpleModule.addDeserializer(CryptoPriceInfo.class, new KucoinFiatPriceDeserializer());
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(simpleModule);
@@ -27,4 +28,5 @@ public class CoinGeckoRestTemplate extends RestTemplate {
         converter.setObjectMapper(objectMapper);
         return List.of(converter);
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.bitcoingenesis.configuration;
 
 import com.example.bitcoingenesis.configuration.templates.CoinBaseRestTemplate;
 import com.example.bitcoingenesis.configuration.templates.CoinGeckoRestTemplate;
+import com.example.bitcoingenesis.configuration.templates.KucoinRestTemplate;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +33,11 @@ public class WebConfiguration {
     @Bean
     CoinGeckoRestTemplate coinGeckoRestTemplate() {
         return new CoinGeckoRestTemplate();
+    }
+
+    @Bean
+    KucoinRestTemplate kucoinRestTemplate() {
+        return new KucoinRestTemplate();
     }
 
 }

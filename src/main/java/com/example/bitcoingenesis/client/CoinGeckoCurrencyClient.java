@@ -4,13 +4,10 @@ import com.example.bitcoingenesis.configuration.templates.CoinGeckoRestTemplate;
 import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.model.providers.coingecko.CoinGeckoSimplePriceDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.*;
 
 @Service

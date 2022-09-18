@@ -3,7 +3,7 @@ package com.example.bitcoingenesis.client;
 import com.example.bitcoingenesis.configuration.templates.CoinBaseRestTemplate;
 import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.Currency;
-import com.example.bitcoingenesis.model.providers.coinbase.CoinBaseSpotPriceResponse;
+import com.example.bitcoingenesis.model.providers.main.coinbase.CoinBaseSpotPriceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

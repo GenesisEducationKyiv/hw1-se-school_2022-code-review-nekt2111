@@ -1,8 +1,6 @@
-package com.example.bitcoingenesis.model.providers.coingecko;
+package com.example.bitcoingenesis.model.providers.main.coingecko;
 
-import com.example.bitcoingenesis.model.Crypto;
 import com.example.bitcoingenesis.model.CryptoPriceInfo;
-import com.example.bitcoingenesis.model.Currency;
 import com.example.bitcoingenesis.model.PriceInCurrency;
 import com.example.bitcoingenesis.utill.JsonNodeUtil;
 import com.fasterxml.jackson.core.JsonParser;
@@ -22,7 +20,7 @@ public class CoinGeckoSimplePriceDeserializer extends JsonDeserializer<CryptoPri
         ObjectCodec codec = jsonParser.getCodec();
         JsonNode jsonNode = codec.readTree(jsonParser);
 
-        cryptoPriceInfo.setCrypto(getDeserializedCrypto(jsonNode));
+        cryptoPriceInfo.setCrypto(JsonNodeUtil.getDeserializedCryptoFromFullName(jsonNode));
 
         JsonNodeUtil.getFirstChild(jsonNode).ifPresent(node -> setPriceInCurrencyValueForCrypto(node, cryptoPriceInfo));
 
@@ -31,21 +29,10 @@ public class CoinGeckoSimplePriceDeserializer extends JsonDeserializer<CryptoPri
 
     private void setPriceInCurrencyValueForCrypto(JsonNode jsonNode, CryptoPriceInfo cryptoPriceInfo) {
         PriceInCurrency priceInCurrency = new PriceInCurrency();
-        priceInCurrency.setCurrency(getDeserializedPriceCurrency(jsonNode));
-        priceInCurrency.setPrice(getDeserializedPriceValue(jsonNode));
+        priceInCurrency.setCurrency(JsonNodeUtil.getDeserializedPriceCurrency(jsonNode));
+        priceInCurrency.setPrice(JsonNodeUtil.getDeserializedPriceValue(jsonNode));
 
         cryptoPriceInfo.setPriceInCurrency(priceInCurrency);
     }
 
-    private Crypto getDeserializedCrypto(JsonNode node) {
-        return Crypto.fromFullName(JsonNodeUtil.getFirstKeyAsString(node));
-    }
-
-    private Currency getDeserializedPriceCurrency(JsonNode node) {
-        return JsonNodeUtil.getFirstKeyAsCurrency(node);
-    }
-
-    private Integer getDeserializedPriceValue(JsonNode node) {
-        return JsonNodeUtil.getFirstValueAsInteger(node);
-    }
 }
