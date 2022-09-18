@@ -20,7 +20,6 @@ public class CoinBaseProvider extends CryptoRateProviderChain  {
         this.cryptoCurrencyClient = new CryptoCurrencyClientDecorator(coinbaseCurrencyClient);
     }
 
-
     @Override
     public Integer getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
         try {
@@ -31,6 +30,7 @@ public class CoinBaseProvider extends CryptoRateProviderChain  {
             return next.getCryptoRateToLocalCurrency(crypto, currency);
         }
     }
+
     @Override
     public String toString() {
         return "CoinBase Provider";

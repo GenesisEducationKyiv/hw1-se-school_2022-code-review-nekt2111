@@ -15,7 +15,6 @@ public class CoinGeckoProvider extends CryptoRateProviderChain {
 
     private final CryptoCurrencyClient cryptoCurrencyClient;
 
-
     public CoinGeckoProvider(CoinGeckoCurrencyClient coinGeckoCurrencyClient) {
         this.cryptoCurrencyClient = new CryptoCurrencyClientDecorator(coinGeckoCurrencyClient);
         LOGGER.info("Coingecko provider was created and configured");
@@ -28,8 +27,9 @@ public class CoinGeckoProvider extends CryptoRateProviderChain {
         } catch (Exception e) {
             LOGGER.info("Error occurred while getting data from {} with error message - {}", this, e.getMessage());
             LOGGER.info("Getting data from an exceptional provider - {}", next);
-            return next.getCryptoRateToLocalCurrency(crypto ,currency);
+            return next.getCryptoRateToLocalCurrency(crypto, currency);
         }
+
     }
 
     @Override

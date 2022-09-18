@@ -31,7 +31,6 @@ public class CryptoProviderConfiguration {
         this.coinBaseProviderFactory = coinBaseProviderFactory;
     }
 
-
     private final static Logger LOGGER = LoggerFactory.getLogger(CryptoProviderConfiguration.class);
 
     @Bean

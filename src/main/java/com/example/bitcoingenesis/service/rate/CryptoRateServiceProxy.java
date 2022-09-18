@@ -8,7 +8,6 @@ import com.example.bitcoingenesis.utill.cache.CryptoPriceCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class CryptoRateServiceProxy implements CryptoRateService {
 
     private final CryptoRateProviderChain cryptoRateProviderChain;

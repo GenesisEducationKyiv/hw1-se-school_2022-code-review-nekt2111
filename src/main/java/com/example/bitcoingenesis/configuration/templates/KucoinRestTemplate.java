@@ -16,7 +16,6 @@ public class KucoinRestTemplate extends RestTemplate {
         this.setMessageConverters(httpMessageConverters());
     }
 
-
     private static List<HttpMessageConverter<?>> httpMessageConverters() {
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addDeserializer(CryptoPriceInfo.class, new KucoinFiatPriceDeserializer());

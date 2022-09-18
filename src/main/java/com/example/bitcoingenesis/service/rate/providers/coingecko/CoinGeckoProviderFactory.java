@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class CoinGeckoProviderFactory implements CryptoRateProviderFactory {
 
@@ -22,7 +21,6 @@ public class CoinGeckoProviderFactory implements CryptoRateProviderFactory {
         this.coinGeckoCurrencyClient = coinGeckoCurrencyClient;
 
     }
-
 
     @Override
     public CryptoRateProviderChain createProvider() {

@@ -16,7 +16,6 @@ public class CryptoCurrencyClientDecorator implements CryptoCurrencyClient {
         this.cryptoCurrencyClient = cryptoCurrencyClient;
     }
 
-
     @Override
     public CryptoPriceInfo getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
 

@@ -20,7 +20,6 @@ public class CoinBaseProviderFactory implements CryptoRateProviderFactory {
         this.coinbaseCurrencyClient = coinbaseCurrencyClient;
     }
 
-
     @Override
     public CryptoRateProviderChain createProvider() {
         CryptoRateProviderChain mainProvider = new CoinBaseProvider(coinbaseCurrencyClient);

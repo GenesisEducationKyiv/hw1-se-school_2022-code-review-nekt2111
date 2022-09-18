@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
-public class KucoinCurrencyClient implements CryptoCurrencyClient{
+public class KucoinCurrencyClient implements CryptoCurrencyClient {
 
     private final KucoinRestTemplate kucoinRestTemplate;
 
