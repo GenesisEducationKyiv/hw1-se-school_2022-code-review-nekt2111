@@ -1,0 +1,29 @@
+version: '3'
+services:
+  user-api:
+    container_name: user-api
+    build:
+      context: ./user-api
+      dockerfile: Dockerfile
+    image: user-api:latest
+    ports:
+      - "8081:8081"
+  rate-api:
+    container_name: rate-api
+    build:
+      context: ./rate-api
+      dockerfile: Dockerfile
+    image: rate-api:latest
+    ports:
+      - "8083:8083"
+  notification-api:
+    container_name: notification-api
+    links:
+      - user-api
+      - rate-api
+    build:
+      context: ./notification-api
+      dockerfile: Dockerfile
+    image: notification-api:latest
+    ports:
+      - "8085:8085"
