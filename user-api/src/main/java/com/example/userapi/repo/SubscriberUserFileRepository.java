@@ -58,15 +58,11 @@ public class SubscriberUserFileRepository implements SubscriberUserRepository {
                 .findFirst()
                 .orElse(null);
 
-        System.out.println(findAll());
-        System.out.println(user);
-
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        System.out.println(FileUtil.getFileFirstLineAsListOfStrings(fileLocation, EMAILS_STRING_SEPARATOR));
         return FileUtil.getFileFirstLineAsListOfStrings(fileLocation, EMAILS_STRING_SEPARATOR).stream().map(User::new).collect(Collectors.toList());
     }
 }

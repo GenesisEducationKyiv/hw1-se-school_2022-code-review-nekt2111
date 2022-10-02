@@ -2,6 +2,7 @@ package com.example.notificationapi.service;
 ;
 import com.example.notificationapi.service.email.EmailService;
 import com.example.notificationapi.service.email.EmailServiceImpl;
+import com.example.notificationapi.service.logger.LoggerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -23,9 +24,12 @@ public class EmailServiceTest {
     @Mock
     private JavaMailSender mailSender;
 
+    @Mock
+    private LoggerService loggerService;
+
     @BeforeEach
     public void beforeTests() {
-        this.emailService = new EmailServiceImpl(mailSender);
+        this.emailService = new EmailServiceImpl(mailSender, loggerService);
     }
 
     @Test

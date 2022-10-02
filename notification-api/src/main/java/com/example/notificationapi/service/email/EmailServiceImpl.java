@@ -1,5 +1,6 @@
 package com.example.notificationapi.service.email;
 
+import com.example.notificationapi.service.logger.LoggerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,35 +12,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private final LoggerService loggerService;
 
-    public EmailServiceImpl(JavaMailSender mailSender) {
+    public EmailServiceImpl(JavaMailSender mailSender,
+                            LoggerService loggerService) {
         this.mailSender = mailSender;
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     @Override
     public boolean sendEmail(SimpleMailMessage message) {
-        LOGGER.info("Trying to send an email to {} with subject - {} and message - {}", message.getTo(), message.getSubject(), message.getText());
+        loggerService.logInfo(format("Trying to send an email to %s with subject - %s and message - %s", message.getTo(), message.getSubject(), message.getText()));
         boolean isSendingSuccessful = false;
 
         try {
             mailSender.send(message);
-            LOGGER.info("Email was sent successfully");
+            loggerService.logInfo("Email was sent successfully");
             isSendingSuccessful = true;
         } catch (RuntimeException exception) {
-            LOGGER.error("Email wasn't sent. Error occurred: ", exception);
+            loggerService.logError(format("Email wasn't sent. Error occurred: %s", exception.getMessage()));
         }
         return isSendingSuccessful;
     }
 
     @Override
     public boolean sendEmailToAll(SimpleMailMessage message, List<String> emails) {
-        LOGGER.info("Starting to send messages to emails... Number of emails to send message - {}", emails.size());
+        loggerService.logInfo(format("Starting to send messages to emails... Number of emails to send message - %s", emails.size()));
         boolean sendingToAllSuccessful = false;
 
         Map<String, Boolean> emailsResultOfSendingMap = new HashMap<>();
@@ -56,9 +62,9 @@ public class EmailServiceImpl implements EmailService {
             sendingToAllSuccessful = true;
         }
 
-        LOGGER.info("Sending of emails is completed.");
-        LOGGER.info("Number of emails that were sent successfully - {} from {}. Emails - [{}] ", emailsWithSuccessfulSending.size(), emails.size(), emailsWithSuccessfulSending);
-        LOGGER.info("Number of emails that were sent with failure - {} from {}. Emails - [{}] ", emailsWithFailedSending.size(), emails.size(), emailsWithFailedSending);
+        loggerService.logInfo("Sending of emails is completed.");
+        loggerService.logInfo(format("Number of emails that were sent successfully - %s from %s. Emails - [%s] ", emailsWithSuccessfulSending.size(), emails.size(), emailsWithSuccessfulSending));
+        loggerService.logInfo(format("Number of emails that were sent with failure - %s from %s. Emails - [%s] ", emailsWithFailedSending.size(), emails.size(), emailsWithFailedSending));
 
         return sendingToAllSuccessful;
     }

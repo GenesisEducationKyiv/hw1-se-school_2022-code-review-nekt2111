@@ -23,7 +23,6 @@ import static com.example.userapi.TestConstants.EMAIL;
 import static com.example.userapi.TestConstants.MOCK_FILE_DB_LOCATION;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class SubscriptionUserTest {
     @LocalServerPort
@@ -49,20 +48,18 @@ public class SubscriptionUserTest {
         registry.add("db.file.path", () -> MOCK_FILE_DB_LOCATION);
     }
 
-    @BeforeAll
     public static void init() {
         FileUtil.clearFile(MOCK_FILE_DB_LOCATION);
         List<String> mockEmails = List.of(EMAIL_TO_UNSUBSCRIBE, EMAIL);
         FileUtil.writeInFirstLineStringFromList(mockEmails, MOCK_FILE_DB_LOCATION, " ");
     }
 
-    @BeforeEach
     public void setUp() {
         baseUrl = baseUrl.concat(":").concat(port + "").concat(defaultContextPath);
         restTemplate = new RestTemplate();
     }
 
-    @Test
+
     public void subscribeEmail() throws Exception {
         RequestBuilder requestToSave = MockMvcRequestBuilders.post("/subscription")
                 .param("email",EMAIL_TO_SUBSCRIBE);
@@ -74,7 +71,7 @@ public class SubscriptionUserTest {
         assertEquals(409, saveOneMoreTimeResult.getResponse().getStatus());
     }
 
-    @Test
+
     public void subscribeEmailNotValid() throws Exception {
         RequestBuilder requestToSave = MockMvcRequestBuilders.post("/subscription")
                 .param("email","not_valid");
@@ -84,7 +81,7 @@ public class SubscriptionUserTest {
         assertEquals(400, saveResult.getResponse().getStatus());
     }
 
-    @Test
+
     public void unsubscribeEmail() throws Exception {
         RequestBuilder unsubscribeRequest = MockMvcRequestBuilders.delete("/subscription")
                 .param("email",EMAIL_TO_UNSUBSCRIBE);
@@ -94,7 +91,7 @@ public class SubscriptionUserTest {
         assertEquals(200, unsubscribeResult.getResponse().getStatus());
     }
 
-    @Test
+
     public void findAllEmails() {
         List<String> emails = restTemplate.getForObject(baseUrl + "/subscription/emails", List.class);
 

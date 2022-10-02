@@ -1,8 +1,10 @@
 package com.example.userapi.services;
 
 import com.example.userapi.service.EmailValidationService;
+import com.example.userapi.service.logger.LoggerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.example.userapi.TestConstants.EMAIL;
@@ -12,9 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EmailValidationTest {
     private EmailValidationService emailValidationService;
 
+    @Mock
+    private LoggerService loggerService;
+
     @BeforeEach
     public void beforeTests(){
-        this.emailValidationService = new EmailValidationService();
+        this.emailValidationService = new EmailValidationService(loggerService);
     }
 
     @Test

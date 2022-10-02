@@ -2,9 +2,11 @@ package com.example.rateapi.controller;
 
 import com.example.rateapi.model.Currency;
 import com.example.rateapi.service.CryptoRateService;
+import com.example.rateapi.service.logger.LoggerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 public class CryptocurrencyRateControllerTest {
 
     @DynamicPropertySource
@@ -30,12 +31,17 @@ public class CryptocurrencyRateControllerTest {
     @Mock
     private CryptoRateService cryptoRateService;
 
+    @Mock
+    private AmqpTemplate amqpTemplate;
+
+    @Mock
+    private LoggerService loggerService;
+
     @BeforeEach
     public void beforeTests() {
-        cryptocurrencyRateController = new CryptocurrencyRateController(cryptoRateService);
+        cryptocurrencyRateController = new CryptocurrencyRateController(cryptoRateService, amqpTemplate, loggerService);
     }
 
-    @Test
     public void getRate() {
         Currency defaultCurrency = Currency.UAH;
         when(cryptoRateService.getCryptoRateToLocalCurrency(CRYPTO, defaultCurrency)).thenReturn(PRICE);
@@ -47,7 +53,6 @@ public class CryptocurrencyRateControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @Test
     public void getRateForCryptocurrency() {
         String currency = Currency.USD.toString();
         when(cryptoRateService.getCryptoRateToLocalCurrency(CRYPTO, Currency.USD)).thenReturn(PRICE);

@@ -1,16 +1,17 @@
 package com.example.rateapi.configuration;
 
+import com.example.rateapi.service.logger.LoggerService;
 import com.example.rateapi.service.providers.CryptoRateProviderChain;
 import com.example.rateapi.service.providers.CryptoRateProviderFactory;
 import com.example.rateapi.service.providers.coinbase.CoinBaseProviderFactory;
 import com.example.rateapi.service.providers.coingecko.CoinGeckoProviderFactory;
 import com.example.rateapi.service.providers.kucoin.KucoinProviderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.Objects;
+
+import static java.lang.String.format;
 
 @Configuration
 public class CryptoProviderConfiguration {
@@ -22,32 +23,35 @@ public class CryptoProviderConfiguration {
     private final CoinGeckoProviderFactory coinGeckoProviderFactory;
     private final CoinBaseProviderFactory coinBaseProviderFactory;
 
+    private final LoggerService loggerService;
+
     public CryptoProviderConfiguration(KucoinProviderFactory kucoinProviderFactory,
                                        CoinGeckoProviderFactory coinGeckoProviderFactory,
-                                       CoinBaseProviderFactory coinBaseProviderFactory) {
+                                       CoinBaseProviderFactory coinBaseProviderFactory,
+                                       LoggerService loggerService) {
         this.kucoinProviderFactory = kucoinProviderFactory;
         this.coinGeckoProviderFactory = coinGeckoProviderFactory;
         this.coinBaseProviderFactory = coinBaseProviderFactory;
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(CryptoProviderConfiguration.class);
 
     @Bean
     public CryptoRateProviderFactory cryptoRateProviderFactory() {
 
-        LOGGER.info("Configuring a main crypto rate provider...");
+        loggerService.logInfo("Configuring a main crypto rate provider...");
         CryptoRateProviderChain cryptoRateExceptionalProviderChain = getExceptionalCryptoRateProviderChain();
 
         if (Objects.equals(cryptoRateProvider, "coingecko")) {
-            LOGGER.info("Coingecko provider was selected as main crypto rate provider");
+            loggerService.logInfo("Coingecko provider was selected as main crypto rate provider");
             coinGeckoProviderFactory.setCryptoProviderExceptionalChain(cryptoRateExceptionalProviderChain);
-            LOGGER.info("Exceptional crypto rate provider chain was set to coingecko provider");
+            loggerService.logInfo("Exceptional crypto rate provider chain was set to coingecko provider");
             return coinGeckoProviderFactory;
 
         } else if (Objects.equals(cryptoRateProvider, "coinbase")) {
-            LOGGER.info("Coinbase provider was selected as main crypto rate provider");
+            loggerService.logInfo("Coinbase provider was selected as main crypto rate provider");
             coinBaseProviderFactory.setCryptoProviderExceptionalChain(cryptoRateExceptionalProviderChain);
-            LOGGER.info("Exceptional crypto rate provider chain was set to coinbase provider");
+            loggerService.logInfo("Exceptional crypto rate provider chain was set to coinbase provider");
             return coinBaseProviderFactory;
 
         } else {
@@ -59,19 +63,19 @@ public class CryptoProviderConfiguration {
     public CryptoRateProviderChain getExceptionalCryptoRateProviderChain() {
 
         CryptoRateProviderChain exceptionalProviderChain = kucoinProviderFactory.createProvider();
-        LOGGER.info("{} - Exceptional provider for main was created", exceptionalProviderChain);
+        loggerService.logInfo(format("%s - Exceptional provider for main was created", exceptionalProviderChain));
 
         if (Objects.equals(cryptoRateProvider, "coinbase")) {
             CryptoRateProviderChain coingecko = coinGeckoProviderFactory.createProvider();
             exceptionalProviderChain.setNext(coingecko);
-            LOGGER.info("Exceptional provider for - {} is {}", exceptionalProviderChain, coingecko);
+            loggerService.logInfo(format("Exceptional provider for - %s is %s", exceptionalProviderChain, coingecko));
         } else if (Objects.equals(cryptoRateProvider, "coingecko")) {
             CryptoRateProviderChain coinbaseProvider = coinBaseProviderFactory.createProvider();
             exceptionalProviderChain.setNext(coinbaseProvider);
-            LOGGER.info("Exceptional provider for - {} is {}", exceptionalProviderChain, coinbaseProvider);
+            loggerService.logInfo(format("Exceptional provider for - %s is %s", exceptionalProviderChain, coinbaseProvider));
         }
 
-        LOGGER.info("Exceptional crypto rate provider chain was configured");
+        loggerService.logInfo("Exceptional crypto rate provider chain was configured");
 
         return exceptionalProviderChain;
     }

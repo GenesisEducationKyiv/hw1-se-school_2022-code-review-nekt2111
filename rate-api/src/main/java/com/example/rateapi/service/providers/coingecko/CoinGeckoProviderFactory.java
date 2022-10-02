@@ -1,11 +1,9 @@
 package com.example.rateapi.service.providers.coingecko;
 
 import com.example.rateapi.client.CoinGeckoCurrencyClient;
+import com.example.rateapi.service.logger.LoggerService;
 import com.example.rateapi.service.providers.CryptoRateProviderChain;
 import com.example.rateapi.service.providers.CryptoRateProviderFactory;
-import com.example.rateapi.service.providers.coinbase.CoinBaseProviderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,16 +13,18 @@ public class CoinGeckoProviderFactory implements CryptoRateProviderFactory {
 
     private CryptoRateProviderChain exceptionalCryptoProviderChain;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoinBaseProviderFactory.class);
+    private LoggerService loggerService;
 
-    public CoinGeckoProviderFactory(CoinGeckoCurrencyClient coinGeckoCurrencyClient) {
+    public CoinGeckoProviderFactory(CoinGeckoCurrencyClient coinGeckoCurrencyClient,
+                                    LoggerService loggerService) {
         this.coinGeckoCurrencyClient = coinGeckoCurrencyClient;
-
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     @Override
     public CryptoRateProviderChain createProvider() {
-        CryptoRateProviderChain mainProvider = new CoinGeckoProvider(coinGeckoCurrencyClient);
+        CryptoRateProviderChain mainProvider = new CoinGeckoProvider(coinGeckoCurrencyClient, loggerService);
         mainProvider.next = exceptionalCryptoProviderChain;
 
         return mainProvider;

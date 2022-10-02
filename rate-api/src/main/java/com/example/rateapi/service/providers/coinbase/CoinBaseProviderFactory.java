@@ -1,10 +1,9 @@
 package com.example.rateapi.service.providers.coinbase;
 
 import com.example.rateapi.client.CoinbaseCurrencyClient;
+import com.example.rateapi.service.logger.LoggerService;
 import com.example.rateapi.service.providers.CryptoRateProviderChain;
 import com.example.rateapi.service.providers.CryptoRateProviderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,15 +13,18 @@ public class CoinBaseProviderFactory implements CryptoRateProviderFactory {
 
     private CryptoRateProviderChain exceptionalCryptoRateChain;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoinBaseProviderFactory.class);
+    private final LoggerService loggerService;
 
-    public CoinBaseProviderFactory(CoinbaseCurrencyClient coinbaseCurrencyClient) {
+    public CoinBaseProviderFactory(CoinbaseCurrencyClient coinbaseCurrencyClient,
+                                   LoggerService loggerService) {
         this.coinbaseCurrencyClient = coinbaseCurrencyClient;
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     @Override
     public CryptoRateProviderChain createProvider() {
-        CryptoRateProviderChain mainProvider = new CoinBaseProvider(coinbaseCurrencyClient);
+        CryptoRateProviderChain mainProvider = new CoinBaseProvider(coinbaseCurrencyClient, loggerService);
         mainProvider.next = exceptionalCryptoRateChain;
         return mainProvider;
     }

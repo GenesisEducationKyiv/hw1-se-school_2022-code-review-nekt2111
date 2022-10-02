@@ -2,11 +2,12 @@ package com.example.rateapi.service;
 
 import com.example.rateapi.model.Crypto;
 import com.example.rateapi.model.Currency;
+import com.example.rateapi.service.logger.LoggerService;
 import com.example.rateapi.service.providers.CryptoRateProviderChain;
 import com.example.rateapi.service.providers.CryptoRateProviderFactory;
 import com.example.rateapi.util.cache.CryptoPriceCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.lang.String.format;
 
 
 public class CryptoRateServiceProxy implements CryptoRateService {
@@ -15,29 +16,32 @@ public class CryptoRateServiceProxy implements CryptoRateService {
 
     private final CryptoPriceCache cryptoPriceCache;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CryptoRateServiceProxy.class);
+    private final LoggerService loggerService;
 
     public CryptoRateServiceProxy(CryptoRateProviderFactory cryptoRateProviderFactory,
-                                  CryptoPriceCache cryptoPriceCache) {
+                                  CryptoPriceCache cryptoPriceCache,
+                                  LoggerService loggerService) {
         cryptoRateProviderChain = cryptoRateProviderFactory.createProvider();
         this.cryptoPriceCache = cryptoPriceCache;
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     public Integer getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
 
-        LOGGER.info("Getting price from cache...");
+        loggerService.logInfo("Getting price from cache...");
 
         Integer price = cryptoPriceCache.get(crypto, currency);
 
         if (price != null) {
-            LOGGER.info("Successfully retrieved price from cache. Price - {} for {} in {}", price, crypto, currency);
+            loggerService.logDebug(format("Successfully retrieved price from cache. Price - %d for %s in %s", price, crypto, currency));
         } else {
-            LOGGER.info("Have not found price in cache for {} in {}. Getting it from provider", crypto, currency);
+            loggerService.logInfo(format("Have not found price in cache for %s in %s. Getting it from provider", crypto, currency));
             price = cryptoRateProviderChain.getCryptoRateToLocalCurrency(crypto, currency);
             cryptoPriceCache.put(crypto, currency, price);
         }
 
-        LOGGER.info("Price for {} in {} is {}", crypto, currency, price);
+        loggerService.logDebug(format("Price for %s in %s is %d", crypto, currency, price));
 
         return price;
     }
