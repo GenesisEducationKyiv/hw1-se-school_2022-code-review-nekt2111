@@ -1,13 +1,14 @@
 # bitcoin-genesis
 
 To run a project 
-1. docker build -t genesis-bitcoin-rate . 
-2. docker run -p 8083:8083 genesis-bitcoin-rate 
+1. Add credentials (email username and password) to notification-api
+2. docker-compose build
+3. docker-compose up
 
-For now we have two main providers coinbase and coingecko, that you can select via ENV variable in docker file.
-Also we have exceptional provider - kucoin. If main provider have problems, we will query it.
+For now, we have two main providers coinbase and coingecko, that you can select via ENV variable in rate-api docker file.
+Also, we have exceptional provider - kucoin. If main provider have problems, we will query it.
 
-Caching feautre can be enbaled or disabled by changing boolean (feature.cache.price.enabled) value in applicaiton.properites file.
+Caching feature can be enabled or disabled by changing boolean (feature.cache.price.enabled) value in rate-api applicaiton.properites file.
 
 # Architecture
 In my application I have 3 layer architecture with Presentation layer, Business logic layer and Data access layer.
@@ -35,6 +36,11 @@ Data access layer will have only implementations of how we can get data from dat
 databases etc.
 
 ### Remark
-In package structure it could seem, that it is not exactly as it is in diagram, cause
+In package structure it could seem, that it is not exactly as it is in diagram, because
 we see that Repository interface is in package within implementation, but it is only for convenience purposes.
 In real flow of application it will work as it presents in diagram.
+
+As I refactored my app to microservices, my project structure was changed, but ,basically,
+my architecture on conceptual level was not changed.
+
+I've also created a branch with name - app-as-monolith with source code. In that branch we can see how my project was as monolith.
