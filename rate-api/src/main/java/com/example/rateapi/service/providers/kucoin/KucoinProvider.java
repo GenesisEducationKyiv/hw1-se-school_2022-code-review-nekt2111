@@ -5,17 +5,22 @@ import com.example.rateapi.client.CryptoCurrencyClientDecorator;
 import com.example.rateapi.client.KucoinCurrencyClient;
 import com.example.rateapi.model.Crypto;
 import com.example.rateapi.model.Currency;
+import com.example.rateapi.service.logger.LoggerService;
 import com.example.rateapi.service.providers.CryptoRateProviderChain;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.lang.String.format;
+
 public class KucoinProvider extends CryptoRateProviderChain {
 
     private final CryptoCurrencyClient cryptoCurrencyClient;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KucoinProvider.class);
+    private final LoggerService loggerService;
 
-    public KucoinProvider(KucoinCurrencyClient kucoinCurrencyClient) {
-        this.cryptoCurrencyClient = new CryptoCurrencyClientDecorator(kucoinCurrencyClient);
+    public KucoinProvider(KucoinCurrencyClient kucoinCurrencyClient,
+                          LoggerService loggerService) {
+        this.cryptoCurrencyClient = new CryptoCurrencyClientDecorator(kucoinCurrencyClient, loggerService);
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     @Override
@@ -24,8 +29,8 @@ public class KucoinProvider extends CryptoRateProviderChain {
         try {
             return cryptoCurrencyClient.getCryptoRateToLocalCurrency(cryptocurrencyName, currency).getPrice();
         } catch (Exception e) {
-            LOGGER.info("Error occurred while getting data from {} with error message - {}", this, e.getMessage());
-            LOGGER.info("Getting data from an exceptional provider - {}", next);
+            loggerService.logError(format("Error occurred while getting data from %s with error message - %s", this, e.getMessage()));
+            loggerService.logInfo(format("Getting data from an exceptional provider - %s", next));
             return next.getCryptoRateToLocalCurrency(cryptocurrencyName, currency);
         }
     }

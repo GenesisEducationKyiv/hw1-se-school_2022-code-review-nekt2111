@@ -3,6 +3,7 @@ package com.example.userapi.services;
 import com.example.userapi.repo.SubscriberUserRepository;
 import com.example.userapi.service.SubscriptionUserService;
 import com.example.userapi.service.SubscriptionUserServiceImpl;
+import com.example.userapi.service.logger.LoggerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,9 +25,12 @@ public class SubscriptionUserServiceTest {
     @Mock
     private SubscriberUserRepository subscriberUserRepository;
 
+    @Mock
+    private LoggerService loggerService;
+
     @BeforeEach
     public void beforeTests() {
-        this.subscriptionUserService = new SubscriptionUserServiceImpl(subscriberUserRepository);
+        this.subscriptionUserService = new SubscriptionUserServiceImpl(subscriberUserRepository, loggerService);
     }
 
     @Test

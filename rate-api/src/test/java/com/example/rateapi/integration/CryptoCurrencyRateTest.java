@@ -22,8 +22,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 public class CryptoCurrencyRateTest {
 
     @LocalServerPort
@@ -43,12 +41,10 @@ public class CryptoCurrencyRateTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
     public void setUp() {
         baseUrl = baseUrl.concat(":").concat(port + "").concat(defaultContextPath);
     }
 
-    @Test
     public void getRate() throws Exception {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/rate");
@@ -60,7 +56,6 @@ public class CryptoCurrencyRateTest {
         assertTrue(Integer.parseInt(mockHttpServletResponse.getContentAsString()) > 0);
     }
 
-    @Test
     public void getRateForCrypto() throws Exception {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/rate/ethereum");

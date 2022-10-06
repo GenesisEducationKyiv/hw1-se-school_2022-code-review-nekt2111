@@ -3,25 +3,29 @@ package com.example.rateapi.client;
 import com.example.rateapi.model.Crypto;
 import com.example.rateapi.model.CryptoPriceInfo;
 import com.example.rateapi.model.Currency;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.rateapi.service.logger.LoggerService;
+
+import static java.lang.String.format;
 
 public class CryptoCurrencyClientDecorator implements CryptoCurrencyClient {
 
     private final CryptoCurrencyClient cryptoCurrencyClient;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CryptoCurrencyClientDecorator.class);
+    private final LoggerService loggerService;
 
-    public CryptoCurrencyClientDecorator(CryptoCurrencyClient cryptoCurrencyClient) {
+    public CryptoCurrencyClientDecorator(CryptoCurrencyClient cryptoCurrencyClient,
+                                         LoggerService loggerService) {
         this.cryptoCurrencyClient = cryptoCurrencyClient;
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     @Override
     public CryptoPriceInfo getCryptoRateToLocalCurrency(Crypto crypto, Currency currency) {
 
-        LOGGER.info("Making request to {} for crypto {} in currency {} ({})", getApiUrl(), crypto.getFullName().toUpperCase(), currency, currency.getFullName());
+        loggerService.logInfo(format("Making request to %s for crypto %s in currency %s (%s)", getApiUrl(), crypto.getFullName().toUpperCase(), currency, currency.getFullName()));
         CryptoPriceInfo cryptoPriceInfo = cryptoCurrencyClient.getCryptoRateToLocalCurrency(crypto, currency);
-        LOGGER.info("Response from {} is {}", cryptoCurrencyClient, cryptoPriceInfo);
+        loggerService.logDebug(format("Response from %s is %s", cryptoCurrencyClient, cryptoPriceInfo));
         return cryptoPriceInfo;
     }
 

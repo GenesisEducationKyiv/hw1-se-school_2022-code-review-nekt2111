@@ -3,6 +3,8 @@ package com.example.rateapi.controller;
 import com.example.rateapi.model.Crypto;
 import com.example.rateapi.model.Currency;
 import com.example.rateapi.service.CryptoRateService;
+import com.example.rateapi.service.logger.LoggerService;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +15,14 @@ public class CryptocurrencyRateController {
 
     private final CryptoRateService cryptoRateService;
 
-    public CryptocurrencyRateController(CryptoRateService cryptoRateService) {
+    private final LoggerService loggerService;
+
+    public CryptocurrencyRateController(CryptoRateService cryptoRateService,
+                                        AmqpTemplate amqpTemplate,
+                                        LoggerService loggerService) {
         this.cryptoRateService = cryptoRateService;
+        this.loggerService = loggerService;
+        loggerService.setOutputClassName(this.getClass().getName());
     }
 
     private final Currency defaultCurrency = Currency.UAH;

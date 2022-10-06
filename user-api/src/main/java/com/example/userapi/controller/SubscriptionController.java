@@ -3,6 +3,7 @@ package com.example.userapi.controller;
 import com.example.userapi.model.User;
 import com.example.userapi.service.EmailValidationService;
 import com.example.userapi.service.SubscriptionUserService;
+import com.example.userapi.service.logger.LoggerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static java.lang.String.format;
 
 @RestController
 @RequestMapping("/subscription")
@@ -19,13 +22,16 @@ public class SubscriptionController {
 
     private final EmailValidationService emailValidationService;
 
+    private final LoggerService loggerService;
+
     public SubscriptionController(SubscriptionUserService subscriptionUserService,
-                                  EmailValidationService emailValidationService) {
+                                  EmailValidationService emailValidationService,
+                                  LoggerService loggerService) {
         this.subscriptionUserService = subscriptionUserService;
         this.emailValidationService = emailValidationService;
+        this.loggerService = loggerService;
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
 
     @PostMapping
     public ResponseEntity<Void> subscribe(@RequestParam String email) {
@@ -50,7 +56,7 @@ public class SubscriptionController {
         User user = subscriptionUserService.findByEmail(email);
 
         if (user == null) {
-            LOGGER.info("User - {} is not subscribed", email);
+            loggerService.logError(format("User - %s is not subscribed", email));
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -61,7 +67,7 @@ public class SubscriptionController {
     @GetMapping("/emails")
     public ResponseEntity<List<String>> emailsOfSubscribers() {
         List<String> emails = subscriptionUserService.getAllSubscribedUsersEmails();
-        LOGGER.info("All subscribed emails - {}", emails);
+        loggerService.logInfo(format("All subscribed emails - %s", emails));
         return ResponseEntity.ok(emails);
     }
 }

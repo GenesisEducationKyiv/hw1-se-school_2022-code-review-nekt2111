@@ -5,19 +5,23 @@ import com.example.rateapi.client.CryptoCurrencyClient;
 import com.example.rateapi.client.CryptoCurrencyClientDecorator;
 import com.example.rateapi.model.Crypto;
 import com.example.rateapi.model.Currency;
+import com.example.rateapi.service.logger.LoggerService;
 import com.example.rateapi.service.providers.CryptoRateProviderChain;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.lang.String.format;
 
 public class CoinGeckoProvider extends CryptoRateProviderChain {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CoinGeckoProvider.class);
-
     private final CryptoCurrencyClient cryptoCurrencyClient;
 
-    public CoinGeckoProvider(CoinGeckoCurrencyClient coinGeckoCurrencyClient) {
-        this.cryptoCurrencyClient = new CryptoCurrencyClientDecorator(coinGeckoCurrencyClient);
-        LOGGER.info("Coingecko provider was created and configured");
+    private final LoggerService loggerService;
+
+    public CoinGeckoProvider(CoinGeckoCurrencyClient coinGeckoCurrencyClient,
+                             LoggerService loggerService) {
+        this.cryptoCurrencyClient = new CryptoCurrencyClientDecorator(coinGeckoCurrencyClient, loggerService);
+        this.loggerService = loggerService;
+        this.loggerService.logInfo("Coingecko provider was created and configured");
+        this.loggerService.setOutputClassName(this.getClass().getName());
     }
 
     @Override
@@ -25,8 +29,8 @@ public class CoinGeckoProvider extends CryptoRateProviderChain {
         try {
             return cryptoCurrencyClient.getCryptoRateToLocalCurrency(crypto, currency).getPrice();
         } catch (Exception e) {
-            LOGGER.info("Error occurred while getting data from {} with error message - {}", this, e.getMessage());
-            LOGGER.info("Getting data from an exceptional provider - {}", next);
+            loggerService.logError(format("Error occurred while getting data from %s with error message - %s", this, e.getMessage()));
+            loggerService.logInfo(format("Getting data from an exceptional provider - %s", next));
             return next.getCryptoRateToLocalCurrency(crypto, currency);
         }
 

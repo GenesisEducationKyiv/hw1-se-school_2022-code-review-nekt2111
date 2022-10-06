@@ -1,6 +1,7 @@
 package com.example.userapi.controller;
 import com.example.userapi.service.EmailValidationService;
 import com.example.userapi.service.SubscriptionUserService;
+import com.example.userapi.service.logger.LoggerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -25,9 +26,12 @@ public class SubscriptionControllerTest {
     @Mock
     private EmailValidationService emailValidationService;
 
+    @Mock
+    private LoggerService loggerService;
+
     @BeforeEach
     public void beforeTests() {
-        subscriptionController = new SubscriptionController(subscriptionEmailService, emailValidationService);
+        subscriptionController = new SubscriptionController(subscriptionEmailService, emailValidationService, loggerService);
     }
 
     @Test

@@ -5,6 +5,9 @@ To run a project
 2. docker-compose build
 3. docker-compose up
 
+To get all logs from message broker run command - docker-compose up logs.
+You also can specify log level in application.properties file in logs-service.
+
 For now, we have two main providers coinbase and coingecko, that you can select via ENV variable in rate-api docker file.
 Also, we have exceptional provider - kucoin. If main provider have problems, we will query it.
 

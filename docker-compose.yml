@@ -1,29 +1,62 @@
 version: '3'
 services:
+  rabbit:
+    container_name: rabbit
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
   user-api:
     container_name: user-api
     build:
       context: ./user-api
       dockerfile: Dockerfile
+    links:
+      - rabbit
     image: user-api:latest
     ports:
       - "8081:8081"
+    environment:
+      RABBIT_HOST: rabbit
+      depends_on: rabbit
   rate-api:
     container_name: rate-api
+    links:
+      - rabbit
     build:
       context: ./rate-api
       dockerfile: Dockerfile
     image: rate-api:latest
     ports:
       - "8083:8083"
+    environment:
+      RABBIT_HOST: rabbit
+      depends_on: rabbit
+  logs:
+    container_name: logs-service
+    links:
+      - rabbit
+    build:
+      context: ./logs-service
+      dockerfile: Dockerfile
+    image: logs-service:latest
+    ports:
+      - "8084:8084"
+    environment:
+      RABBIT_HOST: rabbit
+      depends_on: rabbit
   notification-api:
     container_name: notification-api
     links:
       - user-api
       - rate-api
+      - rabbit
     build:
       context: ./notification-api
       dockerfile: Dockerfile
     image: notification-api:latest
     ports:
       - "8085:8085"
+    environment:
+      RABBIT_HOST: rabbit
+      depends_on: rabbit
