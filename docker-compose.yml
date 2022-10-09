@@ -6,14 +6,14 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-  user-api:
-    container_name: user-api
+  subscription-api:
+    container_name: subscription-api
     build:
-      context: ./user-api
+      context: ./subscription-api
       dockerfile: Dockerfile
     links:
       - rabbit
-    image: user-api:latest
+    image: subscription-api:latest
     ports:
       - "8081:8081"
     environment:
@@ -48,7 +48,7 @@ services:
   notification-api:
     container_name: notification-api
     links:
-      - user-api
+      - subscription-api
       - rate-api
       - rabbit
     build:
@@ -57,6 +57,20 @@ services:
     image: notification-api:latest
     ports:
       - "8085:8085"
+    environment:
+      RABBIT_HOST: rabbit
+      depends_on: rabbit
+  customer-api:
+    container_name: customer-api
+    links:
+      - subscription-api
+      - rabbit
+    build:
+      context: ./customer-api
+      dockerfile: Dockerfile
+    image: customer-api:latest
+    ports:
+      - "8086:8086"
     environment:
       RABBIT_HOST: rabbit
       depends_on: rabbit
