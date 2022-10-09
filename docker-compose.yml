@@ -18,7 +18,7 @@ services:
       - "8081:8081"
     environment:
       RABBIT_HOST: rabbit
-      depends_on: rabbit
+    depends_on: [rabbit]
   rate-api:
     container_name: rate-api
     links:
@@ -31,7 +31,7 @@ services:
       - "8083:8083"
     environment:
       RABBIT_HOST: rabbit
-      depends_on: rabbit
+    depends_on: [rabbit]
   logs:
     container_name: logs-service
     links:
@@ -44,7 +44,7 @@ services:
       - "8084:8084"
     environment:
       RABBIT_HOST: rabbit
-      depends_on: rabbit
+    depends_on: [rabbit]
   notification-api:
     container_name: notification-api
     links:
@@ -59,7 +59,7 @@ services:
       - "8085:8085"
     environment:
       RABBIT_HOST: rabbit
-      depends_on: rabbit
+    depends_on: [rabbit, rate-api, subscription-api]
   customer-api:
     container_name: customer-api
     links:
@@ -73,4 +73,4 @@ services:
       - "8086:8086"
     environment:
       RABBIT_HOST: rabbit
-      depends_on: rabbit
+    depends_on: [rabbit]
